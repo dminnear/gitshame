@@ -1,3 +1,9 @@
 test:
   override:
     - echo "test"
+
+deployment:
+  s3:
+    branch: master
+    commands:
+      - aws s3 sync app/ s3://gitshame
