@@ -3,7 +3,7 @@ test:
     - echo "test"
 
 deployment:
-  s3:
+  master:
     branch: master
     commands:
-      - aws s3 sync app/ s3://gitshame
+      - ./scripts/lambda-deploy pygmentize

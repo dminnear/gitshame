@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -ex
+
+NAME=$1
+
+cd lambdas/"$NAME"
+zip -r "$NAME" .
+
+aws s3 cp "$NAME".zip s3://gitshame-lambdas/"$NAME".zip
+aws lambda update-function-code --function-name "$NAME" --region="us-east-1" --s3-bucket "gitshame-lambdas" --s3-key "$NAME".zip
+
+rm -f "$NAME".zip
