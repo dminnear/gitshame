@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Gitshame</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="templates/main.css" type="text/css">
+
+<body>
+<div class="nav">
+  <h1 class="title"> Gitshame </h1>
+  <a class="shame"> Shame! </a>
+</div>
+<div class="wrapper"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">local</span> <span class="n">state</span>
+
+<span class="n">love</span><span class="o">.</span><span class="n">load</span> <span class="o">=</span> <span class="nf">-&gt;</span>
+  <span class="n">love</span><span class="o">.</span><span class="n">graphics</span><span class="o">.</span><span class="n">setBackgroundColor</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span>
+  <span class="n">width</span> <span class="o">=</span> <span class="nc">Options</span><span class="o">.</span><span class="n">width</span>
+  <span class="n">height</span> <span class="o">=</span> <span class="nc">Options</span><span class="o">.</span><span class="n">height</span>
+  <span class="n">love</span><span class="o">.</span><span class="n">window</span><span class="o">.</span><span class="n">setMode</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span>
+  <span class="n">state</span> <span class="o">=</span> <span class="nc">States</span><span class="o">.</span><span class="n">startModal</span>
+  <span class="n">startModal</span><span class="o">.</span><span class="n">load</span><span class="o">!</span>
+</pre></div>
+</td></tr></table></div>
+<div class="wrapper"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">echo &quot;test&quot;</span>
+
+<span class="l l-Scalar l-Scalar-Plain">deployment</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">s3</span><span class="p p-Indicator">:</span>
+</pre></div>
+</td></tr></table></div></body></html>
