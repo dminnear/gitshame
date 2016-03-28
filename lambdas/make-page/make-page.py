@@ -18,7 +18,7 @@ def handler(event, context):
   bucket = s3.Bucket('gitshame')
   chunks = [key.key for key in bucket.objects.all() if chunks_pattern.match(key.key)]
   html_chunks = [s3.Object('gitshame', key).get()['Body'].read() for key in chunks]
-  html_chunks = ['<div class="wrapper">' + html + '</div>' for html in html_chunks]
+  html_chunks = ['<div class="wrapper groove">' + html + '</div>' for html in html_chunks]
   index_template = s3.Object('gitshame', 'templates/index.html').get()['Body'].read()
   index_html = base_html + '<body>\n' + index_template + '\n'.join(html_chunks) + '</body></html>'
 
