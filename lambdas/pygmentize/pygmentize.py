@@ -13,7 +13,7 @@ def validate_link(link):
   if match:
     return (match.group(1), match.group(2), match.group(3), match.group(4), match.group(5), int(match.group(6)), int(match.group(7)))
   else:
-    raise Exception("Link provided was not a valid github link. Link : " % link)
+    raise Exception("Link provided was not a valid github link. Link : %s" % link)
 
 def handler(event, context):
   github_link = event['github_link']
