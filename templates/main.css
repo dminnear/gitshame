@@ -9,6 +9,7 @@ body {
   border: 1px #000;
   border-style: groove;
   border-radius: 10px;
+  background-color: rgb(255, 255, 255);
 }
 
 #modal {
@@ -48,7 +49,6 @@ button.shame {
   position: absolute;
   right: 0;
   padding: 10px;
-  background-color: rgb(255, 255, 255);
 }
 
 div.wrapper {
