@@ -18,7 +18,7 @@ function shame() {
   link = document.getElementById("link").value;
   httpRequest = new XMLHttpRequest();
   httpRequest.open('POST', 'https://5w7zwh5alf.execute-api.us-east-1.amazonaws.com/prod/pygmentize');
-  xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   httpRequest.send(JSON.stringify({github_link: link}));
   closeModal();
 }
