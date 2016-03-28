@@ -10,6 +10,7 @@ base_html = """
 <title>Gitshame</title>
 <meta charset=UTF-8" />
 <link rel="stylesheet" href="templates/main.css" type="text/css">
+<script src="templates/main.js">
 
 """
 
