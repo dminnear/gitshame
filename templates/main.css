@@ -7,7 +7,7 @@ body {
 
 .groove {
   border: 1px #000;
-  border-style: groove;
+  border-style: solid;
   border-radius: 10px;
   background-color: rgb(255, 255, 255);
 }
