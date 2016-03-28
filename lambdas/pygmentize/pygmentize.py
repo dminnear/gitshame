@@ -11,15 +11,16 @@ def validate_link(link):
   pattern = re.compile("^https:\/\/github\.com\/([a-zA-Z0-9.\-_]*)\/([a-zA-Z0-9.\-_]*)\/blob\/([a-zA-Z0-9.\-_]*)([a-zA-Z0-9.\/\-_]*)\/([a-zA-Z0-9.\-_]*)#L(\d*)-L(\d*)$")
   match = pattern.match(link)
   if match:
-    return (match.group(1), match.group(2), match.group(3), match.group(5), int(match.group(6)), int(match.group(7)))
+    return (match.group(1), match.group(2), match.group(3), match.group(4), match.group(5), int(match.group(6)), int(match.group(7)))
   else:
     raise Exception("Link provided was not a valid github link.")
 
 def handler(event, context):
   github_link = event['github_link']
 
-  owner, repo, branch, filename, start_line, end_line = validate_link(github_link)
-  request = requests.get("https://api.github.com/repos/%s/%s/contents/%s?ref=%s" % (owner, repo, filename, branch)).json()
+  owner, repo, branch, path, filename, start_line, end_line = validate_link(github_link)
+  request = requests.get("https://api.github.com/repos/%s/%s/contents%s/%s?ref=%s" % (owner, repo, path, filename, branch)).json()
+  print "https://api.github.com/repos/%s/%s/contents/%s?ref=%s" % (owner, repo, filename, branch)
   file = request['content'].decode(request['encoding'])
   chunk = '\n'.join(file.splitlines()[start_line-1:end_line])
 
