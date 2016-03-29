@@ -1,3 +1,15 @@
+import boto3
+import re
+
+s3 = boto3.resource('s3')
+chunks_pattern = re.compile("^chunks/.+$")
+
+base_html = """
+<!DOCTYPE html>
+<html lang="en-us">
+<title>Gitshame</title>
+<meta charset=UTF-8" />
+<style>
 html,
 body {
   margin: 0;
@@ -352,3 +364,54 @@ body .vi {
 body .il {
   color: #666666
 }
+</style>
+<script>
+function openModal() {
+  el = document.getElementById("modal");
+  el.style.visibility = "visible";
+}
+
+function closeModal() {
+  el = document.getElementById("modal");
+  el.style.visibility = "hidden";
+}
+
+function closeModalEvent(event) {
+  if (event.target.id == "modal") {
+    closeModal();
+  }
+}
+
+function shame() {
+  link = document.getElementById("link").value;
+  httpRequest = new XMLHttpRequest();
+  httpRequest.open('POST', 'https://5w7zwh5alf.execute-api.us-east-1.amazonaws.com/prod/pygmentize');
+  httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  httpRequest.send(JSON.stringify({github_link: link}));
+  closeModal();
+}
+</script>
+
+<body>
+  <div class="nav">
+    <h1 class="title"> Gitshame </h1>
+    <button type="button" class="shame groove" onclick="openModal()"> Shame! </button>
+  </div>
+  <div id="modal" onclick="closeModalEvent(event)">
+    <div class="groove">
+      <h3> Enter a shameful github link </h3>
+      <input id="link" type="text" name="link">
+      <input type="button" value="Shame!" onclick="shame()">
+    </div>
+  </div>
+
+"""
+
+def handler(event, context):
+  bucket = s3.Bucket('gitshame')
+  chunks = [key.key for key in bucket.objects.all() if chunks_pattern.match(key.key)]
+  html_chunks = [s3.Object('gitshame', key).get()['Body'].read() for key in chunks]
+  html_chunks = ['<div class="wrapper groove">' + html + '</div>' for html in html_chunks]
+  index_html = base_html + '\n'.join(html_chunks) + '</body></html>'
+
+  return index_html

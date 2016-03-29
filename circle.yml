@@ -6,6 +6,5 @@ deployment:
   master:
     branch: master
     commands:
-      - aws s3 cp --recursive templates/ s3://gitshame/templates
-      - ./scripts/lambda-deploy make-page
+      - ./scripts/lambda-deploy index-lambda
       - ./scripts/lambda-deploy pygmentize
