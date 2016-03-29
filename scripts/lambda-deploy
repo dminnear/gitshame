@@ -4,7 +4,7 @@ set -ex
 
 NAME=$1
 
-if git diff --name-only origin/master | grep -q lambdas/"$NAME"; then
+if git diff --name-only HEAD^1 | grep -q lambdas/"$NAME"; then
   cd lambdas/"$NAME"
   zip -r "$NAME" .
 
