@@ -1,7 +1,7 @@
 import boto3
 import re
 
-s3 = boto3.resource('s3')
+client = boto3.client('dynamodb')
 chunks_pattern = re.compile("^chunks/.+$")
 
 base_html = """
@@ -407,10 +407,19 @@ function shame() {
 
 """
 
+def get_item_for_sha(sha):
+  return client.get_item(
+    TableName='gitshame-chunks',
+    Key={
+      'sha': {
+        'S': sha
+      }
+    }
+  )
+
 def handler(event, context):
-  bucket = s3.Bucket('gitshame')
-  chunks = [key.key for key in bucket.objects.all() if chunks_pattern.match(key.key)]
-  html_chunks = [s3.Object('gitshame', key).get()['Body'].read() for key in chunks]
+  item_shas = get_item_for_sha('index_page')['Item']['item_shas']['M']
+  html_chunks = [get_item_for_sha(item_shas[key]['S'])['Item']['html']['S'] for key in item_shas]
   html_chunks = ['<div class="wrapper groove">' + html + '</div>' for html in html_chunks]
   index_html = base_html + '\n'.join(html_chunks) + '</body></html>'
 
