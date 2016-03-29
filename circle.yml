@@ -6,5 +6,5 @@ deployment:
   master:
     branch: master
     commands:
-      - ./scripts/lambda-deploy index-lambda
+      - ./scripts/lambda-deploy index-html
       - ./scripts/lambda-deploy pygmentize
