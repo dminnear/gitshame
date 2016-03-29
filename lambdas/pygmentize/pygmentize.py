@@ -1,11 +1,12 @@
+from pygments import highlight
+from pygments.formatters import HtmlFormatter
+from pygments.lexers import guess_lexer, guess_lexer_for_filename
+import boto3
+import json
 import re
 import requests
-from pygments import highlight
-from pygments.lexers import guess_lexer, guess_lexer_for_filename
-from pygments.formatters import HtmlFormatter
-import boto3
 
-s3 = boto3.resource('s3')
+client = boto3.client('dynamodb')
 
 def validate_link(link):
   pattern = re.compile("^https:\/\/github\.com\/([a-zA-Z0-9.\-_]*)\/([a-zA-Z0-9.\-_]*)\/blob\/([a-zA-Z0-9.\-_]*)([a-zA-Z0-9.\/\-_]*)\/([a-zA-Z0-9.\-_]*)#L(\d*)-L(\d*)$")
@@ -19,13 +20,26 @@ def handler(event, context):
   github_link = event['github_link']
 
   owner, repo, branch, path, filename, start_line, end_line = validate_link(github_link)
-  request = requests.get("https://api.github.com/repos/%s/%s/contents%s/%s?ref=%s" % (owner, repo, path, filename, branch)).json()
-  print "https://api.github.com/repos/%s/%s/contents%s/%s?ref=%s" % (owner, repo, path, filename, branch)
-  file = request['content'].decode(request['encoding'])
+  response = requests.get("https://api.github.com/repos/%s/%s/contents%s/%s?ref=%s" % (owner, repo, path, filename, branch)).json()
+  file = response['content'].decode(response['encoding'])
   chunk = '\n'.join(file.splitlines()[start_line-1:end_line])
 
   lexer = guess_lexer_for_filename(filename, chunk)
   formatter = HtmlFormatter(linenos=True)
   html = highlight(chunk, lexer, formatter)
 
-  s3.Object('gitshame', "chunks/%s.html" % request['sha']).put(Body=html)
+  sha = response['sha']
+
+  client.put_item(
+    TableName='gitshame-chunks',
+    Item={
+      'sha': {
+        'S': sha
+      },
+      'html': {
+        'S': html
+      },
+      'json': {
+        'S': json.dumps(response)
+      }
+    })
