@@ -43,3 +43,37 @@ def handler(event, context):
         'S': json.dumps(response)
       }
     })
+
+  item_shas = client.get_item(
+    TableName='gitshame-chunks',
+    Key={
+      'sha': {
+        'S': 'index_page'
+      }
+    }
+  )['Item']['item_shas']['M']
+
+  client.put_item(
+    TableName='gitshame-chunks'
+    Item={
+      'sha': {
+        'S': 'index_page'
+      },
+      'item_shas': {
+        'M': {
+          '4': {
+            'S': item_shas['3']['S']
+          },
+          '3': {
+            'S': item_shas['2']['S']
+          },
+          '2': {
+            'S': item_shas['1']['S']
+          },
+          '1': {
+            'S': sha
+          },
+        }
+      }
+    }
+  )
