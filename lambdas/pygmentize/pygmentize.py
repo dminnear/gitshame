@@ -54,7 +54,7 @@ def handler(event, context):
   )['Item']['item_shas']['M']
 
   client.put_item(
-    TableName='gitshame-chunks'
+    TableName='gitshame-chunks',
     Item={
       'sha': {
         'S': 'index_page'
