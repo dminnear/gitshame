@@ -9,8 +9,8 @@ base_html = """
 <html lang="en-us">
 <title>Gitshame</title>
 <meta charset=UTF-8" />
-<link href='http://s3.amazonaws.com/gitshame-html/main.css' rel='stylesheet' type='text/css'>
-<script src='http://s3.amazonaws.com/gitshame-html/main.js'></script>
+<link href="//s3.amazonaws.com/gitshame-html/main.css" rel="stylesheet" type="text/css">
+<script src="//s3.amazonaws.com/gitshame-html/main.js"></script>
 
 <body>
   <div class="nav">
