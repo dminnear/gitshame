@@ -8,3 +8,5 @@ deployment:
     commands:
       - ./scripts/lambda-deploy index-html
       - ./scripts/lambda-deploy pygmentize
+      - ./scripts/html-deploy main.css
+      - ./scripts/html-deploy main.js

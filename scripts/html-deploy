@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -ex
+
+FILE=$1
+
+if git diff --FILE-only HEAD^1 | grep -q lambdas/"$FILE" || git ls-files --others --exclude-standard | grep -q lambdas/"$FILE"; then
+  cd html/"$FILE"
+
+  aws s3 cp "$FILE" s3://gitshame-html/"$FILE"
+fi
