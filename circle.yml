@@ -10,3 +10,4 @@ deployment:
       - ./scripts/lambda-deploy pygmentize
       - ./scripts/html-deploy main.css
       - ./scripts/html-deploy main.js
+      - ./scripts/html-deploy icon.png

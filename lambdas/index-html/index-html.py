@@ -10,6 +10,7 @@ base_html = """
 <title>Gitshame</title>
 <meta charset=UTF-8" />
 <link href="//s3.amazonaws.com/gitshame-html/main.css" rel="stylesheet" type="text/css">
+<link href="//s3.amazonaws.com/gitshame-html/icon.png" rel="icon" type="image/png">
 <script src="//s3.amazonaws.com/gitshame-html/main.js"></script>
 
 <body>
