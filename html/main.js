@@ -1,10 +1,23 @@
 function submitComment() {
-  text = document.getElementById("comment-text").value;
+  text = escapeHtml(document.getElementById("comment-text").value);
   comments = document.getElementById("comments").innerHTML;
   comment = '<div class="comment">' + text + '</div>';
   document.getElementById("comments").innerHTML = comment + comments;
   document.getElementById("comment-text").value = "";
 }
+
+function escapeHtml(str) {
+  var div = document.createElement('div');
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+};
+
+function unescapeHtml(escapedStr) {
+  var div = document.createElement('div');
+  div.innerHTML = escapedStr;
+  var child = div.childNodes[0];
+  return child ? child.nodeValue : '';
+};
 
 function openModal() {
   el = document.getElementById("modal");
