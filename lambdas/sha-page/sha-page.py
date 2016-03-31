@@ -37,11 +37,7 @@ closing_html = """
   </div>
 </div>
 
-<div id="comments">
-  <div class="comment">
-    This is a comment.
-  </div>
-</div>
+<div id="comments"></div>
 
 </body></html>
 """
