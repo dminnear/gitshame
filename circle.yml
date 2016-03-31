@@ -8,6 +8,7 @@ deployment:
     commands:
       - ./scripts/lambda-deploy index-html
       - ./scripts/lambda-deploy pygmentize
+      - ./scripts/lambda-deploy sha-page
       - ./scripts/html-deploy main.css
       - ./scripts/html-deploy main.js
       - ./scripts/html-deploy icon.png

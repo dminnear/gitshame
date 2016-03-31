@@ -38,9 +38,9 @@ def get_item_for_sha(sha):
   )
 
 def handler(event, context):
-  item_shas = get_item_for_sha('index_page')['Item']['item_shas']['M']
-  html_chunks = [get_item_for_sha(item_shas[key]['S'])['Item']['html']['S'] for key in sorted(item_shas)]
-  html_chunks = ['<div class="wrapper groove">' + html + '</div>' for html in html_chunks]
-  index_html = base_html + '\n'.join(html_chunks) + '</body></html>'
+  item_sha = event['sha']
+  html = get_item_for_sha(item_sha)['Item']['html']['S']
+  html_chunk = '<div class="wrapper groove">' + html + '</div>'
+  page_html = base_html + html_chunk + '</body></html>'
 
-  return index_html
+  return page_html
