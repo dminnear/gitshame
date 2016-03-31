@@ -5,6 +5,11 @@ body {
   height: 100%;
 }
 
+.file-header {
+  background-color: red;
+  text-align: center;
+}
+
 .groove {
   border: 1px #000;
   border-style: solid;

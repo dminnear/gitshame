@@ -1,9 +1,10 @@
 import boto3
 import re
+import json
 
 client = boto3.client('dynamodb')
 
-base_html = """
+opening_html = """
 <!DOCTYPE html>
 <html lang="en-us">
 <title>Gitshame</title>
@@ -27,6 +28,8 @@ base_html = """
 
 """
 
+closing_html = '</body></html>'
+
 def get_item_for_sha(sha):
   return client.get_item(
     TableName='gitshame-chunks',
@@ -35,12 +38,20 @@ def get_item_for_sha(sha):
         'S': sha
       }
     }
-  )
+  )['Item']
+
+def html_blob(item):
+  html = item['html']['S']
+  json = json.load(item['json']['S'])
+  filename = json['name']
+  sha = json['sha']
+
+  return "<div class='wrapper groove'><div class='file-header'><a href='/blob/%s'>%s</a></div>" % (sha, filename) + html + '</div>'
 
 def handler(event, context):
   item_shas = get_item_for_sha('index_page')['Item']['item_shas']['M']
-  html_chunks = [get_item_for_sha(item_shas[key]['S'])['Item']['html']['S'] for key in sorted(item_shas)]
-  html_chunks = ['<div class="wrapper groove">' + html + '</div>' for html in html_chunks]
-  index_html = base_html + '\n'.join(html_chunks) + '</body></html>'
+  dynamo_items = [get_item_for_sha(item_shas[key]['S']) for key in sorted(item_shas)]
+  html_blobs = [html_blob(item) for item in dynamo_items]
+  index_html = opening_html + '\n'.join(html_chunks) + closing_html
 
   return index_html
