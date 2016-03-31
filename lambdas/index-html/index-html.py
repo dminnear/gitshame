@@ -52,6 +52,6 @@ def handler(event, context):
   item_shas = get_item_for_sha('index_page')['item_shas']['M']
   dynamo_items = [get_item_for_sha(item_shas[key]['S']) for key in sorted(item_shas)]
   html_blobs = [html_blob(item) for item in dynamo_items]
-  index_html = opening_html + '\n'.join(html_chunks) + closing_html
+  index_html = opening_html + '\n'.join(html_blobs) + closing_html
 
   return index_html
