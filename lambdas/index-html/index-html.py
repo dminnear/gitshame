@@ -42,9 +42,9 @@ def get_item_for_sha(sha):
 
 def html_blob(item):
   html = item['html']['S']
-  json = json.load(item['json']['S'])
-  filename = json['name']
-  sha = json['sha']
+  content = json.load(item['json']['S'])
+  filename = content['name']
+  sha = content['sha']
 
   return "<div class='wrapper groove'><div class='file-header'><a href='/blob/%s'>%s</a></div>" % (sha, filename) + html + '</div>'
 
