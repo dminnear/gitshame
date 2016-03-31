@@ -3,7 +3,7 @@ import re
 
 client = boto3.client('dynamodb')
 
-base_html = """
+opening_html = """
 <!DOCTYPE html>
 <html lang="en-us">
 <title>Gitshame</title>
@@ -27,6 +27,8 @@ base_html = """
 
 """
 
+closing_html = '</body></html>'
+
 def get_item_for_sha(sha):
   return client.get_item(
     TableName='gitshame-chunks',
@@ -35,12 +37,12 @@ def get_item_for_sha(sha):
         'S': sha
       }
     }
-  )
+  )['Item']
 
 def handler(event, context):
   item_sha = event['sha']
-  html = get_item_for_sha(item_sha)['Item']['html']['S']
+  html = get_item_for_sha(item_sha)['html']['S']
   html_chunk = '<div class="wrapper groove">' + html + '</div>'
-  page_html = base_html + html_chunk + '</body></html>'
+  page_html = opening_html + html_chunk + closing_html
 
   return page_html
