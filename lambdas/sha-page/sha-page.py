@@ -27,7 +27,24 @@ opening_html = """
 
 """
 
-closing_html = '</body></html>'
+closing_html = """
+<div class="comment-submit">
+  <textarea id="comment-text"></textarea>
+  <div class="buttons">
+    <button type="button" onclick="submitComment()">
+      Submit!
+    </button>
+  </div>
+</div>
+
+<div id="comments">
+  <div class="comment">
+    This is a comment.
+  </div>
+</div>
+
+</body></html>
+"""
 
 def get_item_for_sha(sha):
   return client.get_item(

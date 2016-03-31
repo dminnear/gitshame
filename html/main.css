@@ -5,6 +5,27 @@ body {
   height: 100%;
 }
 
+.comment-submit {
+  position: relative;
+  margin: 10px 15%;
+}
+
+.comment-submit textarea {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.comment-submit .buttons button {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.comment {
+  border-style: double;
+  margin: 10px 15%;
+}
+
 .file-header {
   background-color: red;
   text-align: center;

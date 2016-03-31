@@ -1,3 +1,11 @@
+function submitComment() {
+  text = document.getElementById("comment-text").value;
+  comments = document.getElementById("comments").innerHTML;
+  comment = '<div class="comment">' + text + '</div>';
+  document.getElementById("comments").innerHTML = comment + comments;
+  document.getElementById("comment-text").value = "";
+}
+
 function openModal() {
   el = document.getElementById("modal");
   el.style.visibility = "visible";
