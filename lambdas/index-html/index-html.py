@@ -42,7 +42,7 @@ def get_item_for_sha(sha):
 
 def html_blob(item):
   html = item['html']['S']
-  content = json.load(item['json']['S'])
+  content = json.loads(item['json']['S'])
   filename = content['name']
   sha = content['sha']
 
