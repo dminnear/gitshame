@@ -4,6 +4,13 @@ function submitComment() {
   comment = '<div class="comment">' + text + '</div>';
   document.getElementById("comments").innerHTML = comment + comments;
   document.getElementById("comment-text").value = "";
+
+  href = window.location.href;
+  sha = href.substring(href.lastIndexOf("/") + 1);
+  httpRequest = new XMLHttpRequest();
+  httpRequest.open('POST', 'https://gitshame.xyz/post');
+  httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  httpRequest.send(JSON.stringify({sha: sha, post: text}));
 }
 
 function escapeHtml(str) {
@@ -38,7 +45,7 @@ function closeModalEvent(event) {
 function shame() {
   link = document.getElementById("link").value;
   httpRequest = new XMLHttpRequest();
-  httpRequest.open('POST', 'https://5w7zwh5alf.execute-api.us-east-1.amazonaws.com/prod/pygmentize');
+  httpRequest.open('POST', 'https://gitshame.xyz/pygmentize');
   httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   httpRequest.send(JSON.stringify({github_link: link}));
   closeModal();

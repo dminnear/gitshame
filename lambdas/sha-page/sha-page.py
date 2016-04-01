@@ -28,6 +28,10 @@ opening_html = """
 """
 
 closing_html = """
+</body></html>
+"""
+
+comment_submit_html = """
 <div class="comment-submit">
   <textarea id="comment-text"></textarea>
   <div class="buttons">
@@ -36,10 +40,6 @@ closing_html = """
     </button>
   </div>
 </div>
-
-<div id="comments"></div>
-
-</body></html>
 """
 
 def get_item_for_sha(sha):
@@ -52,10 +52,24 @@ def get_item_for_sha(sha):
     }
   )['Item']
 
+def comments_html(sha):
+  dynamo_comments = client.query(
+    TableName='gitshame-posts',
+    IndexName='sha-timestamp-index',
+    Limit=20,
+    ScanIndexForward=False,
+    ProjectionExpression='post',
+    KeyConditionExpression='sha = :sha',
+    ExpressionAttributeValue={':sha':{'S':sha}})['Items']
+
+  comments = ['<div class="comment">' + comment['post']['S'] + '</div>' for comment in dynamo_comments ]
+
+  return '<div id="comments">' + "\n".join(comments) + '</div>'
+
 def handler(event, context):
   item_sha = event['sha']
   html = get_item_for_sha(item_sha)['html']['S']
   html_chunk = '<div class="wrapper groove">' + html + '</div>'
-  page_html = opening_html + html_chunk + closing_html
+  page_html = opening_html + html_chunk + comment_submit_html + comments_html(item_sha) + closing_html
 
   return page_html
