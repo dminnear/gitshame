@@ -21,7 +21,7 @@ def handler(event, context):
       },
       'timestamp': {
         'S': timestamp
-      }
+      },
       'post': {
         'S': post
       }
