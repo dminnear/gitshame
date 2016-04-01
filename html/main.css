@@ -27,15 +27,14 @@ body {
 }
 
 .file-header {
-  background-color: red;
   text-align: center;
 }
 
 .groove {
-  border: 1px #000;
+  border: 2px #000;
   border-style: solid;
   border-radius: 10px;
-  background-color: rgb(255, 255, 255);
+  background-color: #f8f8f8;
 }
 
 #modal {
@@ -80,6 +79,13 @@ button.shame {
 div.wrapper {
   width: 80%;
   margin: 20px 10% 20px 10%;
+  overflow: hidden;
+  padding: 5px;
+}
+
+div.scroll {
+  padding: 5px;
+  overflow: auto;
 }
 
 td.linenos {
@@ -102,6 +108,7 @@ body .hll {
 
 body {
   background: #f8f8f8;
+  min-width: 500px;
 }
 
 body .c {

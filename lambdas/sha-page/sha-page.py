@@ -69,7 +69,7 @@ def comments_html(sha):
 def handler(event, context):
   item_sha = event['sha']
   html = get_item_for_sha(item_sha)['html']['S']
-  html_chunk = '<div class="wrapper groove">' + html + '</div>'
+  html_chunk = '<div class="wrapper groove"><div class="scroll">' + html + '</div></div>'
   page_html = opening_html + html_chunk + comment_submit_html + comments_html(item_sha) + closing_html
 
   return page_html
