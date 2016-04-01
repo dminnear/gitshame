@@ -46,7 +46,7 @@ def html_blob(item):
   filename = content['name']
   sha = content['sha']
 
-  return "<div class='wrapper groove'><div class='file-header'><a href='/blob/%s'>%s</a></div><div class'scroll'>" % (sha, filename) + html + '</div></div>'
+  return "<div class='wrapper groove'><div class='file-header'><a href='/blob/%s'>%s</a></div><div class='scroll'>" % (sha, filename) + html + '</div></div>'
 
 def handler(event, context):
   item_shas = get_item_for_sha('index_page')['item_shas']['M']
