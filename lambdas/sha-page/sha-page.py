@@ -60,7 +60,7 @@ def comments_html(sha):
     ScanIndexForward=False,
     ProjectionExpression='post',
     KeyConditionExpression='sha = :sha',
-    ExpressionAttributeValue={':sha':{'S':sha}})['Items']
+    ExpressionAttributeValues={':sha':{'S':sha}})['Items']
 
   comments = ['<div class="comment">' + comment['post']['S'] + '</div>' for comment in dynamo_comments ]
 
