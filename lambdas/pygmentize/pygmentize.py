@@ -25,7 +25,7 @@ def handler(event, context):
   chunk = '\n'.join(file.splitlines()[start_line-1:end_line])
 
   lexer = guess_lexer_for_filename(filename, chunk)
-  formatter = HtmlFormatter(linenos=True)
+  formatter = HtmlFormatter(linenos=True,linenostart=start_line)
   html = highlight(chunk, lexer, formatter)
 
   sha = response['sha']
