@@ -7,7 +7,7 @@ FILE=$1
 # Find last successful commit to master
 CURL=$(curl "https://circleci.com/api/v1/project/dminnear/gitshame/tree/master")
 COUNTER=0
-while $CURL | jq ".[$COUNTER].outcome" |  grep -qv success; do
+while jq ".[$COUNTER].outcome" <<< $CURL |  grep -qv success; do
   ((COUNTER++))
 done
 COMMIT=$("$CURL" | jq ".[COUNTER].vcs_revision")
