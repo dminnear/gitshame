@@ -3,6 +3,7 @@
 set -ex
 
 NAME=$1
+LDA_FN=$2
 
 # Find last successful commit to master
 CURL=$(curl "https://circleci.com/api/v1/project/dminnear/gitshame/tree/master")
@@ -17,5 +18,5 @@ if git diff --name-only "$COMMIT" | grep -q lambdas/"$NAME" || git ls-files --ot
   zip -r "$NAME" .
 
   aws s3 cp "$NAME".zip s3://gitshame-lambdas/"$NAME".zip
-  aws lambda update-function-code --function-name "$NAME" --region="us-east-1" --s3-bucket "gitshame-lambdas" --s3-key "$NAME".zip
+  aws lambda update-function-code --function-name "$LDA_FN" --region="us-east-1" --s3-bucket "gitshame-lambdas" --s3-key "$NAME".zip
 fi

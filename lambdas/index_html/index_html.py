@@ -1,8 +1,10 @@
 import boto3
-import re
 import json
+import os
+import re
 
-client = boto3.client('dynamodb')
+local = os.getenv('IS_LOCAL', "false")
+client = boto3.client('dynamodb', endpoint_url='http://localhost:8001', region_name='us-east-1') if local == "true" else boto3.client('dynamodb')
 
 opening_html = """
 <!DOCTYPE html>

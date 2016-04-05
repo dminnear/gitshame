@@ -77,3 +77,5 @@ def handler(event, context):
       }
     }
   )
+
+  return {'sha': sha, 'html': html, 'json': json}
