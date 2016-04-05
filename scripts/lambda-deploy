@@ -4,7 +4,15 @@ set -ex
 
 NAME=$1
 
-if git diff --name-only HEAD^1 | grep -q lambdas/"$NAME" || git ls-files --others --exclude-standard | grep -q lambdas/"$NAME"; then
+# Find last successful commit to master
+CURL=$(curl "https://circleci.com/api/v1/project/dminnear/gitshame/tree/master")
+COUNTER=0
+while jq ".[$COUNTER].outcome" <<< "$CURL" |  grep -qv success; do
+  let ++COUNTER
+done
+COMMIT=$(jq -r ".[$COUNTER].vcs_revision" <<< "$CURL")
+
+if git diff --name-only "$COMMIT" | grep -q lambdas/"$NAME" || git ls-files --others --exclude-standard | grep -q lambdas/"$NAME"; then
   cd lambdas/"$NAME"
   zip -r "$NAME" .
 
