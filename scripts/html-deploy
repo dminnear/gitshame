@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -ex
 
 FILE=$1
 
@@ -12,7 +12,7 @@ while jq ".[$COUNTER].outcome" <<< "$CURL" |  grep -qv success; do
 done
 COMMIT=$(jq ".[$COUNTER].vcs_revision" <<< "$CURL")
 
-if git diff --name-only "$COMMIT" | grep -q html/"$FILE" || git ls-files --others --exclude-standard | grep -q html/"$FILE"; then
+if git diff --name-only $COMMIT | grep -q html/"$FILE" || git ls-files --others --exclude-standard | grep -q html/"$FILE"; then
   cd html/
 
   aws s3 cp "$FILE" s3://gitshame-html/"$FILE"
