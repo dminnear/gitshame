@@ -1,6 +1,6 @@
 dependencies:
   cache_directories:
-    - ~/.dynamo-2015-07-16_1.0
+    - ~/nvm
 
   override:
     - sudo pip install boto3
@@ -8,11 +8,11 @@ dependencies:
 
 test:
   pre:
-    - dynnalite --port 8001 --createTableMs 0 --deleteTableMs 0 --updateTableMs 0:
+    - dynalite --port 8001 --createTableMs 0 --deleteTableMs 0 --updateTableMs 0:
         background: true
 
   override:
-    - IS_LOCAL="true" python lambdas/index_html/index_html_test.py
+    - python lambdas/index_html/index_html_test.py
 
 deployment:
   master:
