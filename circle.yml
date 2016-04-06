@@ -15,6 +15,7 @@ test:
     - python lambdas/index_html/index_html_test.py
     - python lambdas/post_comment/post_comment_test.py
     - python lambdas/sha_page/sha_page_test.py
+    - python lambdas/pygmentize/pygmentize_test.py
 
 deployment:
   master:

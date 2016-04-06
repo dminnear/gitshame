@@ -1,12 +1,16 @@
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import guess_lexer, guess_lexer_for_filename
+from pygments.lexers.special import TextLexer
+from pygments.util import ClassNotFound
 import boto3
 import json
+import os
 import re
 import requests
 
-client = boto3.client('dynamodb')
+local = os.getenv('IS_LOCAL', "false")
+client = boto3.client('dynamodb', endpoint_url='http://localhost:8001', region_name='us-east-1') if local == "true" else boto3.client('dynamodb')
 
 def validate_link(link):
   link_pattern = re.compile('^https:\/\/github\.com\/([a-zA-Z0-9.\-_]*)\/([a-zA-Z0-9.\-_]*)\/blob\/([a-zA-Z0-9.\-_]*)([a-zA-Z0-9.\/\-_]*)\/([a-zA-Z0-9.\-_]*)(#L\d+-L\d+|#L\d+)?$')
@@ -39,9 +43,17 @@ def handler(event, context):
   owner, repo, ref, path, filename, start_line, end_line = validate_link(github_link)
   response = requests.get("https://api.github.com/repos/%s/%s/contents%s/%s?ref=%s" % (owner, repo, path, filename, ref)).json()
   file = response['content'].decode(response['encoding'])
-  chunk = '\n'.join(file.splitlines()[start_line-1:end_line]) if start_line > 0 else '\n'.join(file.splitlines()
+  chunk = '\n'.join(file.splitlines()[start_line-1:end_line]) if start_line > 0 else '\n'.join(file.splitlines())
 
-  lexer = guess_lexer_for_filename(filename, chunk)
+  lexer = TextLexer()
+  try:
+    lexer = guess_lexer_for_filename(filename, chunk)
+  except ClassNotFound:
+    try:
+      lexer = guess_lexer(chunk)
+    except:
+      pass
+
   formatter = HtmlFormatter(linenos=True,linenostart=start_line)
   html = highlight(chunk, lexer, formatter)
 
@@ -95,4 +107,4 @@ def handler(event, context):
     }
   )
 
-  return (sha, html, json)
+  return (sha, html, json.dumps(response))
