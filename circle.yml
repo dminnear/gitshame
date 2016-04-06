@@ -3,7 +3,7 @@ dependencies:
     - ~/.dynamo-2015-07-16_1.0
 
   override:
-    - scripts/circle/install-dynamodb-local
+    - scripts/install-dynamodb-local
 
 test:
   pre:
