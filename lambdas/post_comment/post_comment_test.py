@@ -1,7 +1,7 @@
 import post_comment
 import unittest
 
-class TestIndexHtml(unittest.TestCase):
+class TestPostComment(unittest.TestCase):
   @classmethod
   def setUpClass(cls):
     post_comment.client.create_table(
