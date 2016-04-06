@@ -8,7 +8,7 @@ dependencies:
 test:
   pre:
     - cd ~/.dynamo-$DYNAMO_VERSION; java -Djava.library.path=. -jar DynamoDBLocal.jar -port 8001 -inMemory:
-      background: true
+        background: true
 
   override:
     - IS_LOCAL="true" python lambdas/index_html/index_html_test.py
