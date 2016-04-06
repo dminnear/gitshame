@@ -9,20 +9,37 @@ import requests
 client = boto3.client('dynamodb')
 
 def validate_link(link):
-  pattern = re.compile('^https:\/\/github\.com\/([a-zA-Z0-9.\-_]*)\/([a-zA-Z0-9.\-_]*)\/blob\/([a-zA-Z0-9.\-_]*)([a-zA-Z0-9.\/\-_]*)\/([a-zA-Z0-9.\-_]*)#L(\d*)-L(\d*)$')
-  match = pattern.match(link)
-  if match:
-    return (match.group(1), match.group(2), match.group(3), match.group(4), match.group(5), int(match.group(6)), int(match.group(7)))
+  link_pattern = re.compile('^https:\/\/github\.com\/([a-zA-Z0-9.\-_]*)\/([a-zA-Z0-9.\-_]*)\/blob\/([a-zA-Z0-9.\-_]*)([a-zA-Z0-9.\/\-_]*)\/([a-zA-Z0-9.\-_]*)(#L\d+-L\d+|#L\d+)?$')
+  link_match = link_pattern.match(link)
+  if link_match:
+    owner = link_match.group(1)
+    repo = link_match.group(2)
+    ref = link_match.group(3)
+    path = link_match.group(4)
+    filename = link_match.group(5)
+
+    start_line = -1
+    end_line = -1
+
+    line_pattern = re.compile('^#L(\d+)-?L?(\d+)?$')
+    lines = link_match.group(6) if link_match.group(6) else ''
+    line_match = line_pattern.match(lines)
+
+    if line_match:
+      start_line = int(line_match.group(1))
+      end_line = start_line if not line_match.group(2) else int(line_match.group(2))
+
+    return (owner, repo, ref, path, filename, start_line, end_line)
   else:
     raise Exception("Link provided was not a valid github link. Link : %s" % link)
 
 def handler(event, context):
   github_link = event['github_link']
 
-  owner, repo, branch, path, filename, start_line, end_line = validate_link(github_link)
-  response = requests.get("https://api.github.com/repos/%s/%s/contents%s/%s?ref=%s" % (owner, repo, path, filename, branch)).json()
+  owner, repo, ref, path, filename, start_line, end_line = validate_link(github_link)
+  response = requests.get("https://api.github.com/repos/%s/%s/contents%s/%s?ref=%s" % (owner, repo, path, filename, ref)).json()
   file = response['content'].decode(response['encoding'])
-  chunk = '\n'.join(file.splitlines()[start_line-1:end_line])
+  chunk = '\n'.join(file.splitlines()[start_line-1:end_line]) if start_line > 0 else '\n'.join(file.splitlines()
 
   lexer = guess_lexer_for_filename(filename, chunk)
   formatter = HtmlFormatter(linenos=True,linenostart=start_line)
