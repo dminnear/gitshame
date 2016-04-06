@@ -1,8 +1,10 @@
 import boto3
+import os
 import time
 import uuid
 
-client = boto3.client('dynamodb')
+local = os.getenv('IS_LOCAL', "false")
+client = boto3.client('dynamodb', endpoint_url='http://localhost:8001', region_name='us-east-1') if local == "true" else boto3.client('dynamodb')
 
 def handler(event, context):
   post_id = str(uuid.uuid4())
@@ -26,3 +28,5 @@ def handler(event, context):
         'S': post
       }
     })
+
+  return (post_id, sha, timestamp, post)

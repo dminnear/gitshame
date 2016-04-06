@@ -21,7 +21,7 @@ deployment:
       - ./scripts/lambda-deploy index_html index-html
       - ./scripts/lambda-deploy pygmentize pygmentize
       - ./scripts/lambda-deploy sha-page sha-page
-      - ./scripts/lambda-deploy post-comment post-comment
+      - ./scripts/lambda-deploy post_comment post-comment
       - ./scripts/html-deploy main.css
       - ./scripts/html-deploy main.js
       - ./scripts/html-deploy icon.png
