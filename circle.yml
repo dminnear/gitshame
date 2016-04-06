@@ -22,7 +22,7 @@ deployment:
     commands:
       - ./scripts/lambda-deploy index_html index-html
       - ./scripts/lambda-deploy pygmentize pygmentize
-      - ./scripts/lambda-deploy sha_page sha_page
+      - ./scripts/lambda-deploy sha_page sha-page
       - ./scripts/lambda-deploy post_comment post-comment
       - ./scripts/html-deploy main.css
       - ./scripts/html-deploy main.js
