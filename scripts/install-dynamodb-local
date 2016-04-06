@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -ex
+
+DYNAMO_VERSION="2015-07-16_1.0"
+
+if [ ! -e "$HOME/.dynamo-$DYNAMO_VERSION" ]; then
+  wget "http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_$DYNAMO_VERSION.tar.gz"
+  mkdir "$HOME/.dynamo-$DYNAMO_VERSION"
+  tar xfz "dynamodb_local_$DYNAMO_VERSION.tar.gz" -C "$HOME/.dynamo-$DYNAMO_VERSION"
+  rm "dynamodb_local_$DYNAMO_VERSION.tar.gz"
+fi
