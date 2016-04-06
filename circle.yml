@@ -13,6 +13,7 @@ test:
 
   override:
     - python lambdas/index_html/index_html_test.py
+    - python lambdas/post_comment/post_comment_test.py
 
 deployment:
   master:
