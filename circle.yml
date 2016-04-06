@@ -4,11 +4,11 @@ dependencies:
 
   override:
     - sudo pip install boto3
-    - scripts/install-dynamodb-local
+    - npm install -g dynalite
 
 test:
   pre:
-    - cd ~/.dynamo-$DYNAMO_VERSION; java -Djava.library.path=. -jar DynamoDBLocal.jar -port 8001 -inMemory:
+    - dynnalite --port 8001 --createTableMs 0 --deleteTableMs 0 --updateTableMs 0:
         background: true
 
   override:
