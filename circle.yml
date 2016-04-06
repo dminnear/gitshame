@@ -1,7 +1,6 @@
 dependencies:
   cache_directories:
     - ~/.dynamo-2015-07-16_1.0
-    - ~/nvm
 
   override:
     - sudo pip install boto3
