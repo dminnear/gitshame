@@ -120,6 +120,19 @@ class TestPygmentize(unittest.TestCase):
     self.assertEqual(html, test_link_3['html'])
     self.assertEqual(json, test_link_3['json'])
 
+    items = pygmentize.client.get_item(
+      TableName='gitshame-chunks',
+      Key={
+        'sha': {
+          'S': 'index_page'
+        }
+      }
+    )['Item']['item_shas']['M']
+
+    self.assertEqual(items['1']['S'], test_link_3['sha'])
+    self.assertEqual(items['2']['S'], test_link_2['sha'])
+    self.assertEqual(items['3']['S'], test_link_1['sha'])
+
 
 
 if __name__ == '__main__':
