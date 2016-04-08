@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+help () {
+  echo "Usage: git shame /path/to/file --start-line i --end-line j"
+  echo ""
+  echo "--start-line and --end-line are optional arguments that can be used"
+  echo "to specify which lines should be included in the shame blob. -s and -e"
+  echo "can be used in place of --start-line and --end-line, respectively."
+  echo ""
+}
+
+FILE="$1"
+shift
+
+if [ ! -f "$FILE" ]; then
+  echo "ERROR: $FILE is not a file." >&2
+  exit 1
+fi
+
+START_LINE=-1
+END_LINE=-1
+
+# http://mywiki.wooledge.org/BashFAQ/035
+while :; do
+  case $1 in
+    -h|-\?|--help)
+      help
+      exit
+      ;;
+    -s|--start-line)
+      if [ ! -z "${2##*[!0-9]*}" ] && [ "$2" -gt 0 ]; then
+        START_LINE=$2
+        shift
+      else
+        echo "ERROR: --start-line must be an integer greater than zero." >&2
+        exit 1
+      fi
+      ;;
+    -e|--end-line)
+      if [ ! -z "${2##*[!0-9]*}" ] && [ "$2" -gt 0 ]; then
+        END_LINE=$2
+        shift
+      else
+        echo "ERROR: --end-line must be an integer greater than zero." >&2
+        exit 1
+      fi
+      ;;
+    -?*)
+      echo "ERROR: unknown option $1" >&2
+      ;;
+    *)
+      break
+  esac
+  shift
+done
+
+if [ "$START_LINE" -gt 0 ] && [ "$END_LINE" -gt 0 ]; then
+  if [ "$START_LINE" -gt "$END_LINE" ]; then
+    read -r START_LINE END_LINE <<< "$END_LINE $START_LINE"
+  fi
+fi
+
+DIRNAME=$(dirname "$FILE")
+BASENAME=$(basename "$FILE")
+
+cd "$DIRNAME" || exit 1
+
+PREFIX=$(git rev-parse --show-prefix)
+COMMIT=$(git rev-parse HEAD)
+read -r OWNER REPO <<< "$(git remote show origin -n | grep 'Fetch URL:' | sed -e 's/^.*https:\/\/github.com\/\([a-zA-Z0-9.\-_]*\)\/\([a-zA-Z0-9.\-_]*\)\.git$/\1 \2/')"
+
+LINK="https://github.com/$OWNER/$REPO/blob/$COMMIT/$PREFIX$BASENAME"
+
+if [ "$START_LINE" -lt 0 ]; then
+  if [ "$END_LINE" -gt 0 ]; then
+    LINK="$LINK#L1-L$END_LINE"
+  fi
+else
+  if [ "$END_LINE" -gt 0 ]; then
+    LINK="$LINK#L$START_LINE-L$END_LINE"
+  fi
+fi
+
+curl -s -H "Content-Type: application/json" -X POST -d "{\"github_link\": \"$LINK\"}" https://gitshame.xyz/pygmentize > /dev/null || exit 1
+echo "Shame successfully submitted!"
