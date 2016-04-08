@@ -2,7 +2,7 @@
 Gitshame is now live at [gitshame.xyz](https://gitshame.xyz)!
 
 
-# CLI Tool
+## CLI Tool
 
 To use the command line tool copy the script into your path, for instance `/usr/local/bin`.
 Then you can just call `git shame /path/to/shameful-file`.
