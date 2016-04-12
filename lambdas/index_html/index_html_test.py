@@ -9,11 +9,14 @@ expected = """
 <link href="//s3.amazonaws.com/gitshame-html/main.css" rel="stylesheet" type="text/css">
 <link href="//s3.amazonaws.com/gitshame-html/icon.png" rel="icon" type="image/png">
 <script src="//s3.amazonaws.com/gitshame-html/main.js"></script>
-
 <body>
   <div class="nav">
     <h1 class="title"> Gitshame </h1>
-    <button type="button" class="shame groove" onclick="openModal()"> Shame! </button>
+    <div class="buttons">
+      <span>USER</span>      <button type="button" class="groove" onclick="openModal()">
+        Shame
+      </button>
+    </div>
   </div>
   <div id="modal" onclick="closeModalEvent(event)">
     <div class="groove">
@@ -22,7 +25,6 @@ expected = """
       <input type="button" value="Shame!" onclick="shame()">
     </div>
   </div>
-
 <div class='wrapper groove'><div class='file-header'><a href='/blob/4401a492327917623a31d480a9eae21a31a089ec'>404.jade</a></div><div class='scroll'><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nt">h1</span> 404
 <span class="nt">p</span> Page not found. Bummer.
@@ -154,7 +156,7 @@ class TestIndexHtml(unittest.TestCase):
     index_html.client.delete_table(TableName='gitshame-chunks')
 
   def test_index_html(self):
-    self.assertEqual(index_html.handler('','').strip(), expected.strip())
+    self.assertEqual(index_html.handler({'cookie': 'access_token=abcdefg; state=;'},'')['html'].strip(), expected.strip())
 
 if __name__ == '__main__':
   unittest.main()
