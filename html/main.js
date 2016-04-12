@@ -55,7 +55,5 @@ function githubLogin(state) {
   var url = 'https://github.com/login/oauth/authorize'
   url += '?' + 'client_id=' + '6de9e53b515a73893674' + '&state=' + state + '&redirect=' + 'https://gitshame.xyz/login'
 
-  var httpRequest = new XMLHttpRequest();
-  httpRequest.open('GET', url);
-  httpRequest.send();
+  window.location = url
 }
