@@ -63,7 +63,7 @@ def create_index_html(access_token, state, html_blobs):
   if access_token:
     html += '      <span>' + get_username(access_token) + '</span>'
   else:
-    html += '      <button type="button" class="groove" onclick="githubLogin(' + state + ')">Login</button>'
+    html += '      <button type="button" class="groove" onclick="githubLogin(\'' + state + '\')">Login</button>'
 
   html += """      <button type="button" class="groove" onclick="openModal()">
         Shame
