@@ -15,6 +15,7 @@ def extract_cookie(cookie):
 
 def handler(event, context):
   access_token, state = extract_cookie(event['cookie'])
+
   try:
     if not state == event['param_state']:
       raise Exception('Bad State!')
