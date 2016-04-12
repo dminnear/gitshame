@@ -88,8 +88,8 @@ def handler(event, context):
   access_token, state = extract_cookie(event['cookie'])
 
   try:
-    access_token = event['param_access_token']
-    if not state == event['param_state']:
+    access_token = event['access_token']
+    if not state == event['state']:
       raise Exception('Bad State!')
   except KeyError:
     pass
