@@ -124,4 +124,6 @@ def handler(event, context):
 
   cookie = 'access_token=' + access_token + '; state=' + state + '; Domain=gitshame.xyz; Secure; HttpOnly;'
 
+  print {'html': index_html, 'cookie': cookie}
+
   return {'html': index_html, 'cookie': cookie}
