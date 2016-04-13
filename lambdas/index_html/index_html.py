@@ -46,7 +46,7 @@ def get_access_token(code, state):
     Bucket='gitshame-secrets',
     Key='github_client_secret'
   )
-  client_secret = s3_response['Body'].read()
+  client_secret = s3_response.get()['Body'].read()
 
   data = {
     'client_id': '6de9e53b515a73893674',
@@ -57,7 +57,6 @@ def get_access_token(code, state):
   }
 
   response = requests.post('https://github.com/login/oauth/access_token', data=data, headers={'Accept': 'application/json'}).json()
-  print response
 
   return response['access_token']
 
