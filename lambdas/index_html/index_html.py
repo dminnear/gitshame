@@ -61,7 +61,7 @@ def get_access_token(code, state):
   return response['access_token']
 
 def get_username(access_token):
-  if local:
+  if local == "true":
     return 'USER'
   response = requests.get('https://api.github.com/user?access_token=' + access_token).json()
   return response['login']
@@ -105,6 +105,7 @@ def create_index_html(access_token, state, html_blobs):
   return html
 
 def handler(event, context):
+  print {'event': event}
   access_token, state = extract_cookie(event.get('cookie', ''))
   code = event.get('param_code', '')
 
