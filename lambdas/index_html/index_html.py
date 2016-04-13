@@ -33,7 +33,7 @@ def html_blob(item):
 
 def extract_cookie(cookie):
   cookie_pattern = re.compile('^(access_token=[a-z0-9]*);.*(state=[a-z0-9]*);.*$')
-  access_token = ''
+  access_token = 'NONE'
   state = ''
   cookie_match = cookie_pattern.match(cookie)
   if cookie_match:
@@ -80,7 +80,7 @@ def create_index_html(access_token, state, html_blobs):
     <div class="buttons">
 """
 
-  if access_token:
+  if access_token != 'NONE':
     html += '      <span>' + get_username(access_token) + '</span>'
   else:
     html += '      <button type="button" class="groove" onclick="githubLogin(\'' + state + '\')">Login</button>'
@@ -105,7 +105,6 @@ def create_index_html(access_token, state, html_blobs):
   return html
 
 def handler(event, context):
-  print {'event': event}
   access_token, state = extract_cookie(event.get('cookie', ''))
   code = event.get('param_code', '')
 
@@ -114,7 +113,7 @@ def handler(event, context):
       raise Exception('Bad State!')
     access_token = get_access_token(code, state)
 
-  if access_token == '' and state == '':
+  if access_token == 'NONE' and state == '':
     state = state_generator()
 
   item_shas = get_item_for_sha('index_page')['item_shas']['M']
@@ -123,7 +122,5 @@ def handler(event, context):
   index_html = create_index_html(access_token, state, html_blobs)
 
   cookie = 'access_token=' + access_token + '; state=' + state + '; Domain=gitshame.xyz; Secure; HttpOnly;'
-
-  print {'html': index_html, 'cookie': cookie}
 
   return {'html': index_html, 'cookie': cookie}
