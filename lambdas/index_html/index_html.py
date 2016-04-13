@@ -105,25 +105,15 @@ def create_index_html(access_token, state, html_blobs):
   return html
 
 def handler(event, context):
-  access_token, state = extract_cookie(event['cookie'])
-  code = ''
+  access_token, state = extract_cookie(event.get('cookie', ''))
+  code = event.get('param_code', '')
 
-  try:
-    access_token = event['param_access_token']
-    if not state == event['param_state']:
-      raise Exception('Bad State!')
-  except KeyError:
-    pass
-
-  try:
-    code = event['param_code']
-    if not state == event['param_state']:
+  if not code == '':
+    if not state == event.get('param_state', ''):
       raise Exception('Bad State!')
     access_token = get_access_token(code, state)
-  except KeyError:
-    pass
 
-  if access_token == '':
+  if access_token == '' and state == '':
     state = state_generator()
 
   item_shas = get_item_for_sha('index_page')['item_shas']['M']
