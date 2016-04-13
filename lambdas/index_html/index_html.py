@@ -42,7 +42,7 @@ def extract_cookie(cookie):
   return (access_token, state)
 
 def get_access_token(code, state):
-  s3_response = client.get_object(
+  s3_response = s3_client.get_object(
     Bucket='gitshame-secrets',
     Key='github_client_secret'
   )
