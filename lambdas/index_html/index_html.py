@@ -104,6 +104,11 @@ def create_index_html(access_token, state, html_blobs):
 
   return html
 
+def create_cookie(access_token, state):
+  access_token_cookie = 'access_token=' + access_token + '; Domain=gitshame.xyz; Secure; HttpOnly'
+  state_cookie = 'state=' + state + '; Domain=gitshame.xyz; Secure; HttpOnly'
+  return access_token_cookie + ', ' + state_cookie
+
 def handler(event, context):
   access_token, state = extract_cookie(event.get('cookie', ''))
   code = event.get('param_code', '')
@@ -121,6 +126,6 @@ def handler(event, context):
   html_blobs = [html_blob(item) for item in dynamo_items]
   index_html = create_index_html(access_token, state, html_blobs)
 
-  cookie = 'access_token=' + access_token + '; state=' + state + '; Domain=gitshame.xyz; Secure; HttpOnly;'
+  cookie = create_cookie(access_token, state)
 
   return {'html': index_html, 'cookie': cookie}
