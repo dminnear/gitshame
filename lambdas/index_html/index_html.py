@@ -57,6 +57,7 @@ def get_access_token(code, state):
   }
 
   response = requests.post('https://github.com/login/oauth/access_token', data=data, headers={'Accept': 'application/json'}).json()
+  print response
 
   return response['access_token']
 
