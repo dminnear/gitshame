@@ -32,13 +32,13 @@ def html_blob(item):
   return "<div class='wrapper groove'><div class='file-header'><a href='/blob/%s'>%s</a></div><div class='scroll'>" % (sha, filename) + html + '</div></div>'
 
 def extract_cookie(cookie):
-  cookie_pattern = re.compile('^cookie=([a-z0-9]*)\+([a-z0-9]*);.*$')
+  cookie_pattern = re.compile('^(access_token=[a-z0-9]*);.*(state=[a-z0-9]*);.*$')
   access_token = 'NONE'
   state = ''
   cookie_match = cookie_pattern.match(cookie)
   if cookie_match:
-    access_token = cookie_match.group(1)
-    state = cookie_match.group(2)
+    access_token = cookie_match.group(1)[13:]
+    state = cookie_match.group(2)[6:]
   return (access_token, state)
 
 def get_access_token(code, state):
@@ -121,6 +121,6 @@ def handler(event, context):
   html_blobs = [html_blob(item) for item in dynamo_items]
   index_html = create_index_html(access_token, state, html_blobs)
 
-  cookie = 'cookie=' + access_token + '+' + state + '; Domain=gitshame.xyz; Secure; HttpOnly'
+  cookie = 'access_token=' + access_token + '; state=' + state + '; Domain=gitshame.xyz; Secure; HttpOnly;'
 
   return {'html': index_html, 'cookie': cookie}
