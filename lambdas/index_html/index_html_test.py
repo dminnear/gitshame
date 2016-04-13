@@ -82,7 +82,7 @@ expected = """
 class TestIndexHtml(unittest.TestCase):
   @classmethod
   def setUpClass(cls):
-    index_html.client.create_table(
+    index_html.dynamo_client.create_table(
       AttributeDefinitions=[
         {
           'AttributeName': 'sha',
@@ -102,7 +102,7 @@ class TestIndexHtml(unittest.TestCase):
       }
     )
 
-    index_html.client.put_item(
+    index_html.dynamo_client.put_item(
       TableName='gitshame-chunks',
       Item={
         'sha': {
@@ -121,7 +121,7 @@ class TestIndexHtml(unittest.TestCase):
       }
     )
 
-    index_html.client.put_item(
+    index_html.dynamo_client.put_item(
       TableName='gitshame-chunks',
       Item={
         'sha': {
@@ -136,7 +136,7 @@ class TestIndexHtml(unittest.TestCase):
       }
     )
 
-    index_html.client.put_item(
+    index_html.dynamo_client.put_item(
       TableName='gitshame-chunks',
       Item={
         'sha': {
@@ -153,7 +153,7 @@ class TestIndexHtml(unittest.TestCase):
 
   @classmethod
   def tearDownClass(cls):
-    index_html.client.delete_table(TableName='gitshame-chunks')
+    index_html.dynamo_client.delete_table(TableName='gitshame-chunks')
 
   def test_index_html(self):
     self.assertEqual(index_html.handler({'cookie': 'access_token=abcdefg; state=;'},'')['html'].strip(), expected.strip())

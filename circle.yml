@@ -22,7 +22,6 @@ deployment:
     branch: master
     commands:
       - ./scripts/lambda-deploy index_html index-html
-      - ./scripts/lambda-deploy login login
       - ./scripts/lambda-deploy pygmentize pygmentize
       - ./scripts/lambda-deploy sha_page sha-page
       - ./scripts/lambda-deploy post_comment post-comment
