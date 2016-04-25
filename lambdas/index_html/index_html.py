@@ -32,14 +32,8 @@ def html_blob(item):
   return "<div class='wrapper groove'><div class='file-header'><a href='/blob/%s'>%s</a></div><div class='scroll'>" % (sha, filename) + html + '</div></div>'
 
 def extract_cookie(cookie):
-  cookie_pattern = re.compile('^(access_token=[a-z0-9]*);.*(state=[a-z0-9]*);.*$')
-  access_token = 'NONE'
-  state = ''
-  cookie_match = cookie_pattern.match(cookie)
-  if cookie_match:
-    access_token = cookie_match.group(1)[13:]
-    state = cookie_match.group(2)[6:]
-  return (access_token, state)
+  decoded = json.loads(cookie.decode('base64'))
+  return (decoded.get('access_token', 'NONE'), decoded.get('state', ''))
 
 def get_access_token(code, state):
   s3_response = s3_client.get_object(
@@ -105,9 +99,8 @@ def create_index_html(access_token, state, html_blobs):
   return html
 
 def create_cookie(access_token, state):
-  access_token_cookie = 'access_token=' + access_token + '; Path=/; Domain=gitshame.xyz; Secure; HttpOnly'
-  state_cookie = 'state=' + state + '; Path=/; Domain=gitshame.xyz; Secure; HttpOnly'
-  return access_token_cookie + '\r' + state_cookie
+  encoded = json.dumps({'access_token': access_token, 'state': state}).encode('base64')
+  return 'encoded=' + encoded + '; Path=/; Domain=gitshame.xyz; Secure; HttpOnly'
 
 def handler(event, context):
   access_token, state = extract_cookie(event.get('cookie', ''))
