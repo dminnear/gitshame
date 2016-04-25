@@ -113,6 +113,7 @@ def handler(event, context):
 
   if not code == '':
     if not state == event.get('param_state', ''):
+      print 'state: ' + state + ' param_state: ' + param_state
       raise Exception('Bad State!')
     access_token = get_access_token(code, state)
 
