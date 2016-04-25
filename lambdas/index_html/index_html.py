@@ -71,7 +71,7 @@ def create_index_html(access_token, state, html_blobs):
   html = """<!DOCTYPE html>
 <html lang="en-us">
 <title>Gitshame</title>
-<meta charset=UTF-8" />
+<meta charset="UTF-8" />
 <link href="//s3.amazonaws.com/gitshame-html/main.css" rel="stylesheet" type="text/css">
 <link href="//s3.amazonaws.com/gitshame-html/icon.png" rel="icon" type="image/png">
 <script src="//s3.amazonaws.com/gitshame-html/main.js"></script>
