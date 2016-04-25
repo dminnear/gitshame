@@ -105,9 +105,9 @@ def create_index_html(access_token, state, html_blobs):
   return html
 
 def create_cookie(access_token, state):
-  access_token_cookie = 'access_token=' + access_token + '; Domain=gitshame.xyz; Secure; HttpOnly'
-  state_cookie = 'state=' + state + '; Domain=gitshame.xyz; Secure; HttpOnly'
-  return access_token_cookie + ', ' + state_cookie
+  access_token_cookie = 'access_token=' + access_token + '; Path=/; Domain=gitshame.xyz; Secure; HttpOnly'
+  state_cookie = 'state=' + state + '; Path=/; Domain=gitshame.xyz; Secure; HttpOnly'
+  return access_token_cookie + '\n' + state_cookie
 
 def handler(event, context):
   access_token, state = extract_cookie(event.get('cookie', ''))
