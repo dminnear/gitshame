@@ -38,7 +38,7 @@ def extract_cookie(cookie):
   print 'cookie: ' + cookie
   if cookie_match:
     encoded = cookie_match.group(1)
-    decoded = json.loads(encoded.decode('base64'))
+    decoded = json.loads(encoded)
     print 'decoded: ' + str(decoded)
   return (decoded.get('access_token', 'NONE'), decoded.get('state', ''))
 
@@ -106,7 +106,7 @@ def create_index_html(access_token, state, html_blobs):
   return html
 
 def create_cookie(access_token, state):
-  encoded = json.dumps({'access_token': access_token, 'state': state}).encode('base64')
+  encoded = json.dumps({'access_token': access_token, 'state': state})
   return 'encoded=' + encoded + '; Path=/; Domain=gitshame.xyz; Secure; HttpOnly'
 
 def handler(event, context):
