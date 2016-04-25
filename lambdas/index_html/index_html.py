@@ -32,7 +32,12 @@ def html_blob(item):
   return "<div class='wrapper groove'><div class='file-header'><a href='/blob/%s'>%s</a></div><div class='scroll'>" % (sha, filename) + html + '</div></div>'
 
 def extract_cookie(cookie):
-  decoded = json.loads(cookie.decode('base64')) if not cookie == '' else {}
+  decoded = {}
+  cookie_pattern = re.compile('^encoded=(.*)$')
+  cookie_match = cookie_pattern.match(cookie)
+  if cookie_match:
+    encoded = cookie_match.group(1)
+    decoded = json.loads(encoded.decode('base64'))
   return (decoded.get('access_token', 'NONE'), decoded.get('state', ''))
 
 def get_access_token(code, state):
