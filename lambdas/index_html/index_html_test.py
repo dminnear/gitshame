@@ -156,7 +156,7 @@ class TestIndexHtml(unittest.TestCase):
     index_html.dynamo_client.delete_table(TableName='gitshame-chunks')
 
   def test_index_html(self):
-    self.assertEqual(index_html.handler({'cookie': 'access_token=abcdefg; state=;'},'')['html'].strip(), expected.strip())
+    self.assertEqual(index_html.handler({'cookie': 'encoded=eyJhY2Nlc3NfdG9rZW4iOiAiYWJjZGVmZyIsICJzdGF0ZSI6ICIifQ==\n'},'')['html'].strip(), expected.strip())
 
 if __name__ == '__main__':
   unittest.main()
