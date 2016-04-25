@@ -35,6 +35,7 @@ def extract_cookie(cookie):
   decoded = {}
   cookie_pattern = re.compile('^encoded=(.*)$')
   cookie_match = cookie_pattern.match(cookie)
+  print 'cookie: ' + cookie
   if cookie_match:
     encoded = cookie_match.group(1)
     decoded = json.loads(encoded.decode('base64'))
