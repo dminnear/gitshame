@@ -38,6 +38,7 @@ def extract_cookie(cookie):
   if cookie_match:
     encoded = cookie_match.group(1)
     decoded = json.loads(encoded.decode('base64'))
+    print 'decoded: ' + decoded
   return (decoded.get('access_token', 'NONE'), decoded.get('state', ''))
 
 def get_access_token(code, state):
