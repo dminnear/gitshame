@@ -1,0 +1,19 @@
+head
+  link(rel="icon", href="gslogo.png")
+  link(rel="stylesheet", media="screen", href="https://fontlibrary.org/face/now", type="text/css")
+  style
+    include main.css
+    include:stylus new-main.styl
+body
+  header
+    h1 Gitshame
+    .header-buttons
+      a#login Login
+      a#shame Shame!
+  section.blobs
+    .blob
+      a.file-header main.js
+      include blob.html
+    .blob
+      a.file-header index_html_test.py
+      include blob.html

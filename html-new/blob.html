@@ -1,0 +1,17 @@
+<table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">love</span><span class="p">.</span><span class="n">load</span> <span class="o">=</span> <span class="k">function</span><span class="p">()</span>
+  <span class="n">love</span><span class="p">.</span><span class="n">graphics</span><span class="p">.</span><span class="n">setBackgroundColor</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+  <span class="kd">local</span> <span class="n">width</span> <span class="o">=</span> <span class="n">Options</span><span class="p">.</span><span class="n">width</span>
+  <span class="kd">local</span> <span class="n">height</span> <span class="o">=</span> <span class="n">Options</span><span class="p">.</span><span class="n">height</span>
+  <span class="n">love</span><span class="p">.</span><span class="n">window</span><span class="p">.</span><span class="n">setMode</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+  <span class="n">state</span> <span class="o">=</span> <span class="n">States</span><span class="p">.</span><span class="n">startModal</span>
+  <span class="k">return</span> <span class="n">startModal</span><span class="p">.</span><span class="n">load</span><span class="p">()</span>
+<span class="k">end</span>
+</pre></div>
+</td></tr></tbody></table>
