@@ -10,7 +10,10 @@ function submitComment() {
   var httpRequest = new XMLHttpRequest();
   httpRequest.open('POST', 'https://gitshame.xyz/post');
   httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-  httpRequest.send(JSON.stringify({sha: sha, post: text}));
+  httpRequest.send(JSON.stringify({
+    sha: sha,
+    post: text
+  }));
 }
 
 function escapeHtml(str) {
@@ -47,7 +50,9 @@ function shame() {
   var httpRequest = new XMLHttpRequest();
   httpRequest.open('POST', 'https://gitshame.xyz/pygmentize');
   httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-  httpRequest.send(JSON.stringify({github_link: link}));
+  httpRequest.send(JSON.stringify({
+    github_link: link
+  }));
   closeModal();
 }
 

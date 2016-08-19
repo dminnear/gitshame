@@ -5,28 +5,27 @@ import re
 local = os.getenv('IS_LOCAL', "false")
 client = boto3.client('dynamodb', endpoint_url='http://localhost:8001', region_name='us-east-1') if local == "true" else boto3.client('dynamodb')
 
-opening_html = """
-<!DOCTYPE html>
+opening_html = """<!DOCTYPE html>
 <html lang="en-us">
 <title>Gitshame</title>
-<meta charset=UTF-8" />
+<meta charset="UTF-8" />
 <link href="//s3.amazonaws.com/gitshame-html/main.css" rel="stylesheet" type="text/css">
 <link href="//s3.amazonaws.com/gitshame-html/icon.png" rel="icon" type="image/png">
 <script src="//s3.amazonaws.com/gitshame-html/main.js"></script>
-
 <body>
-  <div class="nav">
-    <h1 class="title"> Gitshame </h1>
-    <button type="button" class="shame groove" onclick="openModal()"> Shame! </button>
-  </div>
+  <header>
+    <h1><a href=\"../\">Gitshame</a></h1>
+    <div class="header-buttons">
+      <a id="shame" onclick="openModal()">Shame!</a>
+    </div>
   <div id="modal" onclick="closeModalEvent(event)">
-    <div class="groove">
+    <div class="modal-inner">
       <h3> Enter a shameful github link </h3>
       <input id="link" type="text" name="link">
       <input type="button" value="Shame!" onclick="shame()">
     </div>
   </div>
-
+  <section>
 """
 
 closing_html = """

@@ -10,27 +10,31 @@ expected = """
 <link href="//s3.amazonaws.com/gitshame-html/icon.png" rel="icon" type="image/png">
 <script src="//s3.amazonaws.com/gitshame-html/main.js"></script>
 <body>
-  <div class="nav">
-    <h1 class="title"> Gitshame </h1>
-    <div class="buttons">
-      <span>USER</span>      <button type="button" class="groove" onclick="openModal()">
-        Shame
-      </button>
+  <header>
+    <h1> Gitshame </h1>
+    <div class="header-buttons">
+      <span>USER</span>      <a id="shame" onclick="openModal()">Shame!</a>
     </div>
-  </div>
+  </header>
   <div id="modal" onclick="closeModalEvent(event)">
-    <div class="groove">
+    <div class="modal-inner">
       <h3> Enter a shameful github link </h3>
       <input id="link" type="text" name="link">
       <input type="button" value="Shame!" onclick="shame()">
     </div>
   </div>
-<div class='wrapper groove'><div class='file-header'><a href='/blob/4401a492327917623a31d480a9eae21a31a089ec'>404.jade</a></div><div class='scroll'><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+  <section>
+    <div class="blob">
+      <a class="file-header" href="/blob/4401a492327917623a31d480a9eae21a31a089ec">404.jade</a>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nt">h1</span> 404
 <span class="nt">p</span> Page not found. Bummer.
 </pre></div>
-</td></tr></table></div></div>
-<div class='wrapper groove'><div class='file-header'><a href='/blob/807f5437a9fe221a6b79d96619b41c67be14c4f4'>activate.sh</a></div><div class='scroll'><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+</td></tr></table>
+    </div>
+    <div class="blob">
+      <a class="file-header" href="/blob/807f5437a9fe221a6b79d96619b41c67be14c4f4">activate.sh</a>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -64,19 +68,23 @@ expected = """
 <span class="c1"># Loads the code-hosting driver that works with the given hostname</span>
 <span class="k">function</span> activate_driver_for_code_hosting <span class="o">{</span>
   <span class="nb">local</span> <span class="nv">origin_hostname</span><span class="o">=</span><span class="s2">"</span><span class="k">$(</span>remote_domain<span class="k">)</span><span class="s2">"</span>
-  <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$origin_hostname</span><span class="s2">"</span> <span class="o">==</span> <span class="s1">'github.com'</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    activate_driver <span class="s1">'code_hosting'</span> <span class="s1">'github'</span>
-  <span class="k">elif</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$origin_hostname</span><span class="s2">"</span> <span class="o">==</span> <span class="s1">'bitbucket.org'</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    activate_driver <span class="s1">'code_hosting'</span> <span class="s1">'bitbucket'</span>
+  <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$origin_hostname</span><span class="s2">"</span> <span class="o">==</span> <span class="s1">\'github.com\'</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    activate_driver <span class="s1">\'code_hosting\'</span> <span class="s1">\'github\'</span>
+  <span class="k">elif</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$origin_hostname</span><span class="s2">"</span> <span class="o">==</span> <span class="s1">\'bitbucket.org\'</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    activate_driver <span class="s1">\'code_hosting\'</span> <span class="s1">\'bitbucket\'</span>
   <span class="k">else</span>
     echo_error_header
     echo_usage <span class="s2">"Unsupported hosting service."</span>
-    echo_usage <span class="s1">'This command requires hosting on GitHub or Bitbucket.'</span>
+    echo_usage <span class="s1">\'This command requires hosting on GitHub or Bitbucket.\'</span>
     exit_with_error newline
   <span class="k">fi</span>
 <span class="o">}</span>
 </pre></div>
-</td></tr></table></div></div></body></html>
+</td></tr></table>
+    </div>
+  </section>
+</body>
+</html>
 """
 
 class TestIndexHtml(unittest.TestCase):
@@ -156,7 +164,15 @@ class TestIndexHtml(unittest.TestCase):
     index_html.dynamo_client.delete_table(TableName='gitshame-chunks')
 
   def test_index_html(self):
-    self.assertEqual(index_html.handler({'cookie': 'encoded={"access_token": "abcdefg", "state": ""}'},'')['html'].strip(), expected.strip())
+    # Convenient for debugging! Will output the characters where actual differs from expected
+    expect = expected.strip()
+    actual = index_html.handler({'cookie': 'encoded={"access_token": "abcdefg", "state": ""}'},'')['html'].strip()
+    for i, c in enumerate(expect):
+      if actual[i] != c:
+        print actual[i:]
+        break
+
+    self.assertEqual(actual, expect)
 
 if __name__ == '__main__':
   unittest.main()

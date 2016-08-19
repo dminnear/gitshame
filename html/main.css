@@ -2,98 +2,20 @@ html,
 body {
   margin: 0;
   padding: 0;
-  height: 100%;
-  font-family: sans-serif;
-}
-
-.comment-submit {
-  position: relative;
-  margin: 10px 15%;
-}
-
-.comment-submit textarea {
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.comment-submit .buttons button {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-}
-
-.comment {
-  border-style: double;
-  margin: 10px 15%;
-}
-
-.file-header {
-  text-align: center;
-}
-
-.groove {
-  border: 2px #000;
-  border-style: solid;
-  border-radius: 10px;
-  background-color: #f8f8f8;
-}
-
-#modal {
-  visibility: hidden;
-  position: fixed;
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  z-index: 1000;
-  background-color: rgba(0, 0, 0, .5);
-}
-
-#modal div {
-  width: 60%;
-  margin: 100px auto;
-  background-color: #fff;
-  padding: 10px;
-}
-
-#modal div h3 {
-  margin: 10px;
-}
-
-div.nav {
-  text-align: center;
-  position: relative;
-  margin: 10px;
-}
-
-h1.title {
-  display: inline;
-}
-
-div.buttons {
-  position: absolute;
-  right: 0;
-  top: 0;
-  /* float: right; */
-  padding: 10px;
-}
-
-div.wrapper {
-  width: 80%;
-  margin: 20px 10% 20px 10%;
-  overflow: hidden;
-  padding: 5px;
-}
-
-div.scroll {
-  padding: 5px;
-  overflow: auto;
+  font-family: 'NowRegular';
 }
 
 td.linenos {
-  background-color: #f0f0f0;
-  padding-right: 10px;
+  background-color: #a7a6a4;
+  padding: .5rem;
+  border: 1px solid #a7a6a4;
+  border-radius: 10px;
+  color: white;
+}
+
+td.code {
+  padding-left: 1rem;
+  text-align: left;
 }
 
 span.lineno {
@@ -387,4 +309,128 @@ body .vi {
 
 body .il {
   color: #666666
+}
+
+body {
+  background: #c7ced8;
+}
+
+body a {
+  text-decoration: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+body textarea {
+  resize: none;
+}
+
+body header {
+  padding: 0.5rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #a7a6a4;
+  color: #fff;
+}
+
+body header h1 {
+  font-size: 1.5rem;
+  font-weight: normal;
+}
+
+body header .header-buttons a {
+  margin-left: 2rem;
+  font-size: 1rem;
+}
+
+body header .header-buttons a#login:hover,
+body header .header-buttons a#login:active,
+body header .header-buttons a#login:focus {
+  color: #3a3a3e;
+}
+
+body header .header-buttons a#shame:hover,
+body header .header-buttons a#shame:active,
+body header .header-buttons a#shame:focus {
+  color: #3a3a3e;
+}
+
+body section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body section .blob,
+body section #comment,
+body section .comment {
+  color: #0d0d0f;
+  background: #fff;
+  width: 60%;
+  border: 1px solid #0d0d0f;
+  border-radius: 10px;
+  margin: 3rem 0 0 0;
+  padding: 1rem;
+  text-align: center;
+  overflow: hidden;
+}
+
+body section textarea {
+  font-size: 1rem;
+  width: 100%;
+  height: 5rem;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+body section #comment {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 50%;
+  height: 6rem;
+  padding: 0;
+}
+
+body section #comment textarea {
+  padding: 1rem 1rem 0 1rem;
+  border-bottom: 1px solid #0d0d0f;
+}
+
+body section #comment a#comment-submit {
+  margin-right: 1rem;
+  color: #a7a6a4;
+}
+
+body section .comment {
+  height: 5rem;
+  font-size: 1rem;
+  width: 50%;
+}
+
+body #modal {
+  visibility: hidden;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, .3);
+}
+
+body #modal .modal-inner {
+  width: 60%;
+  margin: 100px auto;
+  background-color: #a7a6a4;
+  padding: 10px;
+}
+
+body #modal .modal-inner h3 {
+  margin: 1rem;
+  color: white;
+  font-size: 1.5rem;
 }

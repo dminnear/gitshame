@@ -29,17 +29,17 @@ def html_blob(item):
   filename = content['name']
   sha = content['sha']
 
-  return "<div class='wrapper groove'><div class='file-header'><a href='/blob/%s'>%s</a></div><div class='scroll'>" % (sha, filename) + html + '</div></div>'
+  return "    <div class=\"blob\">\n      <a class=\"file-header\" href=\"/blob/%s\">%s</a>\n" % (sha, filename) + html + '\n    </div>'
 
 def extract_cookie(cookie):
   decoded = {}
   cookie_pattern = re.compile('^encoded=(.*)$')
   cookie_match = cookie_pattern.match(cookie)
-  print 'cookie: ' + cookie
+  # print 'cookie: ' + cookie
   if cookie_match:
     encoded = cookie_match.group(1)
     decoded = json.loads(encoded)
-    print 'decoded: ' + str(decoded)
+    # print 'decoded: ' + str(decoded)
   return (decoded.get('access_token', 'NONE'), decoded.get('state', ''))
 
 def get_access_token(code, state):
@@ -76,32 +76,31 @@ def create_index_html(access_token, state, html_blobs):
 <link href="//s3.amazonaws.com/gitshame-html/icon.png" rel="icon" type="image/png">
 <script src="//s3.amazonaws.com/gitshame-html/main.js"></script>
 <body>
-  <div class="nav">
-    <h1 class="title"> Gitshame </h1>
-    <div class="buttons">
+  <header>
+    <h1> Gitshame </h1>
+    <div class="header-buttons">
 """
 
   if access_token != 'NONE':
     html += '      <span>' + get_username(access_token) + '</span>'
   else:
-    html += '      <button type="button" class="groove" onclick="githubLogin(\'' + state + '\')">Login</button>'
+    html += '      <a id="login" onclick="githubLogin(\'' + state + '\')">Login</a>'
 
-  html += """      <button type="button" class="groove" onclick="openModal()">
-        Shame
-      </button>
+  html += """      <a id="shame" onclick="openModal()">Shame!</a>
     </div>
-  </div>
+  </header>
   <div id="modal" onclick="closeModalEvent(event)">
-    <div class="groove">
+    <div class="modal-inner">
       <h3> Enter a shameful github link </h3>
       <input id="link" type="text" name="link">
       <input type="button" value="Shame!" onclick="shame()">
     </div>
   </div>
+  <section>
 """
   html += '\n'.join(html_blobs)
 
-  html += '</body></html>'
+  html += '\n  </section>\n</body>\n</html>'
 
   return html
 
