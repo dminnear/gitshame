@@ -9,6 +9,7 @@ expected = """
 <link href="//s3.amazonaws.com/gitshame-html/main.css" rel="stylesheet" type="text/css">
 <link href="//s3.amazonaws.com/gitshame-html/icon.png" rel="icon" type="image/png">
 <script src="//s3.amazonaws.com/gitshame-html/main.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <body>
   <header>
     <h1><a href="../">Gitshame</a></h1>
@@ -35,12 +36,14 @@ expected = """
   <section>
     <div id="comment">
       <textarea id="comment-text"></textarea>
-      <a id="comment-submit">Submit</a>
+      <a id="comment-submit" onclick="submitComment()">Submit</a>
     </div>
-    <div class="comment">
-      <textarea readonly>
+    <div id="comments">
+      <div class="comment">
+        <textarea readonly>
 test post
-      </textarea>
+        </textarea>
+      </div>
     </div>
   </section>
 </body>

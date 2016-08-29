@@ -395,6 +395,7 @@ body section #comment {
 }
 
 body section #comment textarea {
+  box-sizing: border-box;
   padding: 1rem 1rem 0 1rem;
   border-bottom: 1px solid #0d0d0f;
 }
@@ -402,6 +403,12 @@ body section #comment textarea {
 body section #comment a#comment-submit {
   margin-right: 1rem;
   color: #a7a6a4;
+}
+
+body section #comment a#comment-submit:hover,
+body section #comment a#comment-submit:active,
+body section #comment a#comment-submit:focus {
+  color: #3a3a3e;
 }
 
 body section .comment {

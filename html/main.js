@@ -1,12 +1,12 @@
 function submitComment() {
-  var text = escapeHtml(document.getElementById("comment-text").value);
-  var comments = document.getElementById("comments").innerHTML;
-  var comment = '<div class="comment">' + text + '</div>';
-  document.getElementById("comments").innerHTML = comment + comments;
-  document.getElementById("comment-text").value = "";
+  var text = escapeHtml($('#comment-text').value);
+  var comments = $('#comments').innerHTML;
+  var comment = '      <div class="comment">\n        <textarea readonly>\n' + text + '\n        </textarea>\n      </div>\n';
+  $('#comments').innerHTML = comment + comments;
+  $('#comment-text').value = '';
 
   var href = window.location.href;
-  var sha = href.substring(href.lastIndexOf("/") + 1);
+  var sha = href.substring(href.lastIndexOf('/') + 1);
   var httpRequest = new XMLHttpRequest();
   httpRequest.open('POST', 'https://gitshame.xyz/post');
   httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");

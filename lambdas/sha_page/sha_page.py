@@ -12,6 +12,7 @@ opening_html = """<!DOCTYPE html>
 <link href="//s3.amazonaws.com/gitshame-html/main.css" rel="stylesheet" type="text/css">
 <link href="//s3.amazonaws.com/gitshame-html/icon.png" rel="icon" type="image/png">
 <script src="//s3.amazonaws.com/gitshame-html/main.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <body>
   <header>
     <h1><a href="../">Gitshame</a></h1>
@@ -37,7 +38,7 @@ comment_submit_html = """
   <section>
     <div id="comment">
       <textarea id="comment-text"></textarea>
-      <a id="comment-submit">Submit</a>
+      <a id="comment-submit" onclick="submitComment()">Submit</a>
     </div>
 """
 
@@ -61,9 +62,9 @@ def comments_html(sha):
     KeyConditionExpression='sha = :sha',
     ExpressionAttributeValues={':sha':{'S':sha}})['Items']
 
-  comments = ['    <div class="comment">\n      <textarea readonly>\n' + comment['post']['S'] + '\n      </textarea>\n    </div>' for comment in dynamo_comments ]
+  comments = ['      <div class="comment">\n        <textarea readonly>\n' + comment['post']['S'] + '\n        </textarea>\n      </div>' for comment in dynamo_comments ]
 
-  return "\n".join(comments) + '\n  </section>'
+  return '    <div id="comments">\n' + "\n".join(comments) + '\n    </div>\n  </section>'
 
 def handler(event, context):
   item_sha = event['sha']
