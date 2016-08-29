@@ -1,9 +1,9 @@
 function submitComment() {
-  var text = escapeHtml($('#comment-text').value);
-  var comments = $('#comments').innerHTML;
+  var text = escapeHtml($('#comment-text').val());
+  var comments = $('#comments').html();
   var comment = '      <div class="comment">\n        <textarea readonly>\n' + text + '\n        </textarea>\n      </div>\n';
-  $('#comments').innerHTML = comment + comments;
-  $('#comment-text').value = '';
+  $('#comments').html(comment + comments);
+  $('#comment-text').val('');
 
   var href = window.location.href;
   var sha = href.substring(href.lastIndexOf('/') + 1);
