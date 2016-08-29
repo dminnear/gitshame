@@ -434,8 +434,6 @@ body #modal {
   text-align: center;
   z-index: 1000;
   background-color: rgba(0, 0, 0, .75);
-  border: 1px solid #0d0d0f;
-  border-radius: 10px;
 
 }
 
@@ -444,6 +442,8 @@ body #modal .modal-inner {
   margin: 100px auto;
   background-color: #a7a6a4;
   padding: 10px;
+  border: 1px solid #0d0d0f;
+  border-radius: 10px;
 }
 
 body #modal .modal-inner h3 {
