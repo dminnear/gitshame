@@ -5,39 +5,45 @@ expected = """
 <!DOCTYPE html>
 <html lang="en-us">
 <title>Gitshame</title>
-<meta charset=UTF-8" />
+<meta charset="UTF-8" />
 <link href="//s3.amazonaws.com/gitshame-html/main.css" rel="stylesheet" type="text/css">
 <link href="//s3.amazonaws.com/gitshame-html/icon.png" rel="icon" type="image/png">
 <script src="//s3.amazonaws.com/gitshame-html/main.js"></script>
-
 <body>
-  <div class="nav">
-    <h1 class="title"> Gitshame </h1>
-    <button type="button" class="shame groove" onclick="openModal()"> Shame! </button>
-  </div>
+  <header>
+    <h1><a href="../">Gitshame</a></h1>
+    <div class="header-buttons">
+      <a id="shame" onclick="openModal()">Shame!</a>
+    </div>
   <div id="modal" onclick="closeModalEvent(event)">
-    <div class="groove">
+    <div class="modal-inner">
       <h3> Enter a shameful github link </h3>
       <input id="link" type="text" name="link">
       <input type="button" value="Shame!" onclick="shame()">
     </div>
   </div>
-
-<div class="wrapper groove"><div class="scroll"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+  <section>
+    <div class="blob">
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nt">h1</span> 404
 <span class="nt">p</span> Page not found. Bummer.
 </pre></div>
-</td></tr></table></div></div>
-<div class="comment-submit">
-  <textarea id="comment-text"></textarea>
-  <div class="buttons">
-    <button type="button" onclick="submitComment()">
-      Submit!
-    </button>
-  </div>
-</div>
-<div id="comments"><div class="comment">test post</div></div>
-</body></html>
+</td></tr></table>
+    </div>
+  </section>
+  <section>
+    <div id="comment">
+      <textarea id="comment-text"></textarea>
+      <a id="comment-submit">Submit</a>
+    </div>
+    <div class="comment">
+      <textarea readonly>
+test post
+      </textarea>
+    </div>
+  </section>
+</body>
+</html>
 """
 
 class TestShaPage(unittest.TestCase):
@@ -152,6 +158,14 @@ class TestShaPage(unittest.TestCase):
     sha_page.client.delete_table(TableName='gitshame-posts')
 
   def test_sha_page(self):
+    # Convenient for debugging! Will output the characters where actual differs from expected
+    expect = expected.strip()
+    actual = sha_page.handler({'sha':'4401a492327917623a31d480a9eae21a31a089ec'},'').strip()
+    for i, c in enumerate(expect):
+      if actual[i] != c:
+        print actual[i:]
+        break
+
     self.assertEqual(sha_page.handler({'sha':'4401a492327917623a31d480a9eae21a31a089ec'},'').strip(), expected.strip())
 
 if __name__ == '__main__':

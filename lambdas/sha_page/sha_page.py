@@ -14,7 +14,7 @@ opening_html = """<!DOCTYPE html>
 <script src="//s3.amazonaws.com/gitshame-html/main.js"></script>
 <body>
   <header>
-    <h1><a href=\"../\">Gitshame</a></h1>
+    <h1><a href="../">Gitshame</a></h1>
     <div class="header-buttons">
       <a id="shame" onclick="openModal()">Shame!</a>
     </div>
@@ -25,22 +25,19 @@ opening_html = """<!DOCTYPE html>
       <input type="button" value="Shame!" onclick="shame()">
     </div>
   </div>
-  <section>
 """
 
 closing_html = """
-</body></html>
+</body>
+</html>
 """
 
 comment_submit_html = """
-<div class="comment-submit">
-  <textarea id="comment-text"></textarea>
-  <div class="buttons">
-    <button type="button" onclick="submitComment()">
-      Submit!
-    </button>
-  </div>
-</div>
+  <section>
+    <div id="comment">
+      <textarea id="comment-text"></textarea>
+      <a id="comment-submit">Submit</a>
+    </div>
 """
 
 def get_item_for_sha(sha):
@@ -63,14 +60,14 @@ def comments_html(sha):
     KeyConditionExpression='sha = :sha',
     ExpressionAttributeValues={':sha':{'S':sha}})['Items']
 
-  comments = ['<div class="comment">' + comment['post']['S'] + '</div>' for comment in dynamo_comments ]
+  comments = ['    <div class="comment">\n      <textarea readonly>\n' + comment['post']['S'] + '\n      </textarea>\n    </div>' for comment in dynamo_comments ]
 
-  return '<div id="comments">' + "\n".join(comments) + '</div>'
+  return "\n".join(comments) + '\n  </section>'
 
 def handler(event, context):
   item_sha = event['sha']
   html = get_item_for_sha(item_sha)['html']['S']
-  html_chunk = '<div class="wrapper groove"><div class="scroll">' + html + '</div></div>'
+  html_chunk = '  <section>\n    <div class="blob">\n' + html + '\n    </div>\n  </section>'
   page_html = opening_html + html_chunk + comment_submit_html + comments_html(item_sha) + closing_html
 
   return page_html
