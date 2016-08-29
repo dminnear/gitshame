@@ -18,6 +18,7 @@ opening_html = """<!DOCTYPE html>
     <div class="header-buttons">
       <a id="shame" onclick="openModal()">Shame!</a>
     </div>
+  </header>
   <div id="modal" onclick="closeModalEvent(event)">
     <div class="modal-inner">
       <h3> Enter a shameful github link </h3>
