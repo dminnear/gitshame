@@ -14,7 +14,8 @@ expected = """
   <header>
     <h1> Gitshame </h1>
     <div class="header-buttons">
-      <span>USER</span>      <a id="shame" onclick="openModal()">Shame!</a>
+      <span>USER</span>
+      <a id="shame" onclick="openModal()">Shame!</a>
     </div>
   </header>
   <div id="modal" onclick="closeModalEvent(event)">
@@ -27,7 +28,7 @@ expected = """
   <section>
     <div class="blob">
       <a class="file-header" href="/blob/4401a492327917623a31d480a9eae21a31a089ec">404.jade</a>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+      <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nt">h1</span> 404
 <span class="nt">p</span> Page not found. Bummer.
 </pre></div>
@@ -35,7 +36,7 @@ expected = """
     </div>
     <div class="blob">
       <a class="file-header" href="/blob/807f5437a9fe221a6b79d96619b41c67be14c4f4">activate.sh</a>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+      <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
