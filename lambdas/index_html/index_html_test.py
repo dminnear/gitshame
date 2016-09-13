@@ -12,7 +12,9 @@ expected = """
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <body>
   <header>
-    <h1> Gitshame </h1>
+    <h1>
+      <a href="/"> Gitshame </a>
+    </h1>
     <div class="header-buttons">
       <span>USER</span>
       <a id="shame" onclick="openModal()">Shame!</a>
@@ -70,14 +72,14 @@ expected = """
 <span class="c1"># Loads the code-hosting driver that works with the given hostname</span>
 <span class="k">function</span> activate_driver_for_code_hosting <span class="o">{</span>
   <span class="nb">local</span> <span class="nv">origin_hostname</span><span class="o">=</span><span class="s2">"</span><span class="k">$(</span>remote_domain<span class="k">)</span><span class="s2">"</span>
-  <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$origin_hostname</span><span class="s2">"</span> <span class="o">==</span> <span class="s1">\'github.com\'</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    activate_driver <span class="s1">\'code_hosting\'</span> <span class="s1">\'github\'</span>
-  <span class="k">elif</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$origin_hostname</span><span class="s2">"</span> <span class="o">==</span> <span class="s1">\'bitbucket.org\'</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    activate_driver <span class="s1">\'code_hosting\'</span> <span class="s1">\'bitbucket\'</span>
+  <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$origin_hostname</span><span class="s2">"</span> <span class="o">==</span> <span class="s1">'github.com'</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    activate_driver <span class="s1">'code_hosting'</span> <span class="s1">'github'</span>
+  <span class="k">elif</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$origin_hostname</span><span class="s2">"</span> <span class="o">==</span> <span class="s1">'bitbucket.org'</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    activate_driver <span class="s1">'code_hosting'</span> <span class="s1">'bitbucket'</span>
   <span class="k">else</span>
     echo_error_header
     echo_usage <span class="s2">"Unsupported hosting service."</span>
-    echo_usage <span class="s1">\'This command requires hosting on GitHub or Bitbucket.\'</span>
+    echo_usage <span class="s1">'This command requires hosting on GitHub or Bitbucket.'</span>
     exit_with_error newline
   <span class="k">fi</span>
 <span class="o">}</span>

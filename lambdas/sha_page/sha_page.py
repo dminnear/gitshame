@@ -1,75 +1,46 @@
-import boto3
+from common.common import *
 import os
 import re
 
-local = os.getenv('IS_LOCAL', "false")
-client = boto3.client('dynamodb', endpoint_url='http://localhost:8001', region_name='us-east-1') if local == "true" else boto3.client('dynamodb')
-
-opening_html = """<!DOCTYPE html>
-<html lang="en-us">
-<title>Gitshame</title>
-<meta charset="UTF-8" />
-<link href="//s3.amazonaws.com/gitshame-html/main.css" rel="stylesheet" type="text/css">
-<link href="//s3.amazonaws.com/gitshame-html/icon.png" rel="icon" type="image/png">
-<script src="//s3.amazonaws.com/gitshame-html/main.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<body>
-  <header>
-    <h1><a href="../">Gitshame</a></h1>
-    <div class="header-buttons">
-      <a id="shame" onclick="openModal()">Shame!</a>
-    </div>
-  </header>
-  <div id="modal" onclick="closeModalEvent(event)">
-    <div class="modal-inner">
-      <h3> Enter a shameful github link </h3>
-      <input id="link" type="text" name="link">
-      <input type="button" value="Shame!" onclick="shame()">
-    </div>
-  </div>
-"""
-
-closing_html = """
-</body>
-</html>
-"""
-
-comment_submit_html = """
-  <section>
-    <div id="comment">
-      <textarea id="comment-text"></textarea>
-      <a id="comment-submit" onclick="submitComment()">Submit</a>
-    </div>
-"""
-
-def get_item_for_sha(sha):
-  return client.get_item(
-    TableName='gitshame-chunks',
-    Key={
-      'sha': {
-        'S': sha
-      }
-    }
-  )['Item']
-
-def comments_html(sha):
-  dynamo_comments = client.query(
-    TableName='gitshame-posts',
-    IndexName='sha-timestamp-index',
-    Limit=20,
-    ScanIndexForward=False,
-    ProjectionExpression='post',
-    KeyConditionExpression='sha = :sha',
-    ExpressionAttributeValues={':sha':{'S':sha}})['Items']
-
-  comments = ['      <div class="comment">\n        <textarea readonly>\n' + comment['post']['S'] + '\n        </textarea>\n      </div>' for comment in dynamo_comments ]
-
-  return '    <div id="comments">\n' + "\n".join(comments) + '\n    </div>\n  </section>'
+template = 'common/templates/sha_page.template'
 
 def handler(event, context):
-  item_sha = event['sha']
-  html = get_item_for_sha(item_sha)['html']['S']
-  html_chunk = '  <section>\n    <div class="blob">\n' + html + '\n    </div>\n  </section>'
-  page_html = opening_html + html_chunk + comment_submit_html + comments_html(item_sha) + closing_html
+  sha = event['sha']
 
-  return page_html
+  redirect = "https://gitshame.xyz/blob/%s" % sha
+  username, state, cookie = github_oauth(event, redirect)
+
+  try:
+    blob = get_item_for_sha(sha)['html']['S']
+  except Exception as e:
+    print "[ERROR] Error retrieving html blob for sha %s. Exception %s." % (sha, e)
+    blob = '<span>Invalid sha.</span>'
+
+  comments = get_comments(sha)
+
+  sha_page_html = render(template, {
+    'username': username,
+    'state': state,
+    'redirect': redirect,
+    'blob': blob,
+    'comments': comments
+  })
+
+  return {"html": sha_page_html, 'cookie': cookie}
+
+def get_comments(sha):
+  try:
+    items = dynamo_client.query(
+      TableName='gitshame-posts',
+      IndexName='sha-timestamp-index',
+      Limit=20,
+      ScanIndexForward=False,
+      ProjectionExpression='post',
+      KeyConditionExpression='sha = :sha',
+      ExpressionAttributeValues={':sha':{'S':sha}})['Items']
+    comments = [item['post']['S'] for item in items]
+  except Exception as e:
+    print "[ERROR] Unable to retrieve comments for sha %s. Exception %s." % (sha, e)
+    return []
+
+  return comments

@@ -1,6 +1,9 @@
 function submitComment() {
-  var text = escapeHtml($('#comment-text').val());
+  var text = $('#comment-text').val();
   var comments = $('#comments').html();
+  if ($.trim(text) == "") {
+    return
+  }
   var comment = '      <div class="comment">\n        <textarea readonly>\n' + text + '\n        </textarea>\n      </div>\n';
   $('#comments').html(comment + comments);
   $('#comment-text').val('');
@@ -15,19 +18,6 @@ function submitComment() {
     post: text
   }));
 }
-
-function escapeHtml(str) {
-  var div = document.createElement('div');
-  div.appendChild(document.createTextNode(str));
-  return div.innerHTML;
-};
-
-function unescapeHtml(escapedStr) {
-  var div = document.createElement('div');
-  div.innerHTML = escapedStr;
-  var child = div.childNodes[0];
-  return child ? child.nodeValue : '';
-};
 
 function openModal() {
   var el = document.getElementById("modal");
@@ -56,9 +46,9 @@ function shame() {
   closeModal();
 }
 
-function githubLogin(state) {
+function githubLogin(state, redirect) {
   var url = 'https://github.com/login/oauth/authorize'
-  url += '?' + 'client_id=' + '6de9e53b515a73893674' + '&state=' + state + '&redirect=' + 'https://gitshame.xyz/login'
+  url += '?' + 'client_id=' + '6de9e53b515a73893674' + '&state=' + state + '&redirect=' + redirect
 
   window.location = url
 }

@@ -13,9 +13,9 @@ test:
 
   override:
     - ./scripts/lambda-test index_html
-    - python lambdas/post_comment/post_comment_test.py
-    - python lambdas/sha_page/sha_page_test.py
-    - python lambdas/pygmentize/pygmentize_test.py
+    - ./scripts/lambda-test post_comment
+    - ./scripts/lambda-test sha_page
+    - ./scripts/lambda-test pygmentize
 
 deployment:
   master:

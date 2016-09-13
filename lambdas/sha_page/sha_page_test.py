@@ -12,8 +12,11 @@ expected = """
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <body>
   <header>
-    <h1><a href="../">Gitshame</a></h1>
+    <h1>
+      <a href="/"> Gitshame </a>
+    </h1>
     <div class="header-buttons">
+      <span>USER</span>
       <a id="shame" onclick="openModal()">Shame!</a>
     </div>
   </header>
@@ -26,7 +29,7 @@ expected = """
   </div>
   <section>
     <div class="blob">
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+      <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nt">h1</span> 404
 <span class="nt">p</span> Page not found. Bummer.
 </pre></div>
@@ -41,7 +44,7 @@ expected = """
     <div id="comments">
       <div class="comment">
         <textarea readonly>
-test post
+          test post
         </textarea>
       </div>
     </div>
@@ -53,7 +56,7 @@ test post
 class TestShaPage(unittest.TestCase):
   @classmethod
   def setUpClass(cls):
-    sha_page.client.create_table(
+    sha_page.dynamo_client.create_table(
       AttributeDefinitions=[
         {
           'AttributeName': 'sha',
@@ -73,7 +76,7 @@ class TestShaPage(unittest.TestCase):
       }
     )
 
-    sha_page.client.create_table(
+    sha_page.dynamo_client.create_table(
       AttributeDefinitions=[
         {
           'AttributeName': 'post_id',
@@ -123,7 +126,7 @@ class TestShaPage(unittest.TestCase):
       }
     )
 
-    sha_page.client.put_item(
+    sha_page.dynamo_client.put_item(
       TableName='gitshame-posts',
       Item={
         'post_id': {
@@ -141,7 +144,7 @@ class TestShaPage(unittest.TestCase):
       }
     )
 
-    sha_page.client.put_item(
+    sha_page.dynamo_client.put_item(
       TableName='gitshame-chunks',
       Item={
         'sha': {
@@ -158,19 +161,19 @@ class TestShaPage(unittest.TestCase):
 
   @classmethod
   def tearDownClass(cls):
-    sha_page.client.delete_table(TableName='gitshame-chunks')
-    sha_page.client.delete_table(TableName='gitshame-posts')
+    sha_page.dynamo_client.delete_table(TableName='gitshame-chunks')
+    sha_page.dynamo_client.delete_table(TableName='gitshame-posts')
 
   def test_sha_page(self):
     # Convenient for debugging! Will output the characters where actual differs from expected
     expect = expected.strip()
-    actual = sha_page.handler({'sha':'4401a492327917623a31d480a9eae21a31a089ec'},'').strip()
+    actual = sha_page.handler({'sha':'4401a492327917623a31d480a9eae21a31a089ec'},'')['html'].strip()
     for i, c in enumerate(expect):
       if actual[i] != c:
         print actual[i:]
         break
 
-    self.assertEqual(sha_page.handler({'sha':'4401a492327917623a31d480a9eae21a31a089ec'},'').strip(), expected.strip())
+    self.assertEqual(sha_page.handler({'sha':'4401a492327917623a31d480a9eae21a31a089ec'},'')['html'].strip(), expected.strip())
 
 if __name__ == '__main__':
   unittest.main()

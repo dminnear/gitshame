@@ -1,0 +1,12 @@
+{%- extends "base.template" %}
+{%- block body %}
+{{- super() }}
+  <section>
+    {%- for blob in html_blobs %}
+    <div class="blob">
+      <a class="file-header" href="/blob/{{ blob.sha }}">{{ blob.filename|e }}</a>
+      {{ blob.html }}
+    </div>
+    {%- endfor %}
+  </section>
+{%- endblock %}

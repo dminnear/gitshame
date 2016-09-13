@@ -10,4 +10,6 @@ if [ -e requirements.txt ]; then
   pip install -r requirements.txt -t .
 fi
 
+cp -r ../../common common
+
 python *_test.py
