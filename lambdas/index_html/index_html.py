@@ -136,6 +136,7 @@ def get_username(access_token):
     username = requests.get('https://api.github.com/user?access_token=' + access_token).json()['login']
   except Exception as e:
     print "[ERROR] Unable to retrieve username from github for access token %s. Exception: %s." % (access_token, e)
+    return ''
 
     return username
 
