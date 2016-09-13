@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -ex
+set -euxo pipefail
 
 DYNAMO_VERSION="2015-07-16_1.0"
 
