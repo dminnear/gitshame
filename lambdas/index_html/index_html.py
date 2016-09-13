@@ -1,9 +1,7 @@
 from common.common import *
-import boto3
 import requests
 
 template = 'common/templates/index.template'
-s3_client = boto3.client('s3')
 redirect = 'https://gitshame.xyz'
 
 def handler(event, context):

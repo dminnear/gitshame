@@ -9,6 +9,7 @@ import string
 
 local = os.getenv('IS_LOCAL', '') != ''
 dynamo_client = boto3.client('dynamodb', endpoint_url='http://localhost:8001', region_name='us-east-1') if local else boto3.client('dynamodb')
+s3_client = boto3.client('s3')
 
 # from http://matthiaseisen.com/pp/patterns/p0198/
 def render(tpl_path, args):

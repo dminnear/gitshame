@@ -16,7 +16,7 @@
       {%- if username %}
       <span>{{ username|e }}</span>
       {%- else %}
-      <a id="login" onclick="githubLogin('{{ state }}', '{{ redirect }}')">Login</a>
+      <a id="login" onclick="githubLogin('{{ state }}', '{{ redirect|e }}')">Login</a>
       {%- endif %}
       <a id="shame" onclick="openModal()">Shame!</a>
     </div>
