@@ -6,17 +6,17 @@ NAME=$1
 LDA_FN=$2
 
 # Find last successful commit to master
-CURL=$(curl "https://circleci.com/api/v1/project/dminnear/gitshame/tree/master")
-COUNTER=0
-while jq ".[$COUNTER].outcome" <<< "$CURL" |  grep -qv success; do
-  let ++COUNTER
-done
-COMMIT=$(jq -r ".[$COUNTER].vcs_revision" <<< "$CURL")
+# CURL=$(curl "https://circleci.com/api/v1/project/dminnear/gitshame/tree/master")
+# COUNTER=0
+# while jq ".[$COUNTER].outcome" <<< "$CURL" |  grep -qv success; do
+#   let ++COUNTER
+# done
+# COMMIT=$(jq -r ".[$COUNTER].vcs_revision" <<< "$CURL")
 
-if git diff --name-only "$COMMIT" | grep -q lambdas/"$NAME" || git ls-files --others --exclude-standard | grep -q lambdas/"$NAME"; then
-  cd lambdas/"$NAME"
-  zip -r "$NAME" .
+# if git diff --name-only "$COMMIT" | grep -q lambdas/"$NAME" || git ls-files --others --exclude-standard | grep -q lambdas/"$NAME"; then
+cd lambdas/"$NAME"
+zip -r "$NAME" .
 
-  aws s3 cp "$NAME".zip s3://gitshame-lambdas/"$NAME".zip
-  aws lambda update-function-code --function-name "$LDA_FN" --region="us-east-1" --s3-bucket "gitshame-lambdas" --s3-key "$NAME".zip
-fi
+aws s3 cp "$NAME".zip s3://gitshame-lambdas/"$NAME".zip
+aws lambda update-function-code --function-name "$LDA_FN" --region="us-east-1" --s3-bucket "gitshame-lambdas" --s3-key "$NAME".zip
+# fi
