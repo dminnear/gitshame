@@ -11,6 +11,10 @@ def handler(event, context):
   dynamo_items = filter(None, [get_item_for_sha(sha) for sha in index_shas])
   html_blobs = filter(None, [html_blob(item) for item in dynamo_items])
 
+  print "[DEBUG] username = %s." % username
+  print "[DEBUG] state = %s." % state
+  print "[DEBUG] cookie = %s." % cookie
+
   index_html = render(template, {
     'username': username,
     'state': state,
