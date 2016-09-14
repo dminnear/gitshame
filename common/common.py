@@ -104,7 +104,7 @@ def get_username(access_token):
     print "[ERROR] Unable to retrieve username from github for access token %s. Exception: %s." % (access_token, e)
     return ''
 
-    return username
+  return username
 
 
 def encode_cookie(access_token, state):
