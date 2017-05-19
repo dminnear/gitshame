@@ -1,2 +1,2 @@
-pygments
 requests
+pygments

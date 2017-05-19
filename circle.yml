@@ -1,6 +1,10 @@
+machine:
+  environment:
+    USE_DYNAMO_LOCAL: "True"
+
 dependencies:
   cache_directories:
-    - ~/.dynamo-2015-07-16_1.0
+    - ~/.dynamo-2017-02-16
 
   override:
     - sudo pip install boto3
@@ -8,23 +12,15 @@ dependencies:
 
 test:
   pre:
-    - cd ~/.dynamo-2015-07-16_1.0 && java -Djava.library.path=. -jar DynamoDBLocal.jar -port 8001 -inMemory:
+    - cd ~/.dynamo-2017-02-16 && java -Djava.library.path=. -jar DynamoDBLocal.jar -port 8001 -inMemory:
         background: true
 
   override:
-    - ./scripts/lambda-test index_html
-    - ./scripts/lambda-test post_comment
-    - ./scripts/lambda-test sha_page
-    - ./scripts/lambda-test pygmentize
+    - ./scripts/lambda-test index
+    - ./scripts/lambda-test submit
 
 deployment:
   master:
     branch: master
     commands:
-      - ./scripts/lambda-deploy index_html index-html
-      - ./scripts/lambda-deploy pygmentize pygmentize
-      - ./scripts/lambda-deploy sha_page sha-page
-      - ./scripts/lambda-deploy post_comment post-comment
-      - ./scripts/html-deploy main.css
-      - ./scripts/html-deploy main.js
-      - ./scripts/html-deploy icon.png
+      - aws s3 sync html s3://gitshame-html
